@@ -814,10 +814,10 @@
             }
             else if (jsonArray['page_type_id'] == 5) {
                 var innerHtml = '<div class="pageInfo steps' + jsonArray['id'] + '">' +
-                    '<video style="width:100%" controls poster=' + windowWidth + '/e_loop/' + jsonArray['video_name'] + '.gif">' +
-                    '<source src=' + windowWidth + '/' + jsonArray['video_name'] + '.mp4" type="video/mp4" />' +
-                    '<source src=' + windowWidth + '/' + jsonArray['video_name'] + '.ogg" type="video/ogg" />' +
-                    '<source src=' + windowWidth + '/' + jsonArray['video_name'] + '.webm" type="video/webm" />' +
+                    '<video style="width:100%" controls poster="'+ jsonArray['video_name'] + '">' +
+                    '<source src=' + jsonArray['video_name'] + 'type="video/mp4"/>' +
+                    '<source src=' + jsonArray['video_name'] + 'type="video/ogg"/>' +
+                    '<source src=' + jsonArray['video_name'] + 'type="video/webm"/>' +
                     '</video>' +
                     '</div>';
             }

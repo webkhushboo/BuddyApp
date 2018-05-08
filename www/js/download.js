@@ -17,19 +17,24 @@ document.addEventListener('deviceready', function () {
 
 });
 
-function download(img, page_id, column_name, table_name) {
+function download(img, page_id, column_name, table_name,video_flag) {
     window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function (fs) {
 
         var url = "http://res.cloudinary.com/buddy-industries-cc/image/upload/c_fill,h_900,w_1600/" + img + ".jpg";
+        var extension = ".jpg";
+        if(video_flag){
+           url ="http://res.cloudinary.com/buddy-industries-cc/video/upload/c_limit,w_360/e_loop/" + img + ".gif";
+           extension =".gif";
+        }
         var random_string = Math.floor(Math.random() * 1012534);
-        fs.root.getFile(img + random_string + '.jpg', {
+        fs.root.getFile(img + random_string + extension, {
             create: true,
             exclusive: false
         }, function (fileEntry) {
-            if(table_name == 'child_pages')
-            file_transfer_child_pages(fileEntry, encodeURI(url), true, page_id, column_name, table_name);
+            if (table_name == 'child_pages')
+                file_transfer_child_pages(fileEntry, encodeURI(url), true, page_id, column_name, table_name);
             else
-            file_transfer(fileEntry, encodeURI(url), true, page_id, column_name, table_name);
+                file_transfer(fileEntry, encodeURI(url), true, page_id, column_name, table_name);
 
         }, onErrorCreateFile);
 
@@ -48,7 +53,7 @@ function file_transfer(fileEntry, uri, readBinaryData, page_id, column_name, tab
 
     var fileTransfer = new FileTransfer();
     var fileURL = fileEntry.toURL();
-   
+
     fileTransfer.download(
         uri,
         fileURL,
@@ -59,7 +64,7 @@ function file_transfer(fileEntry, uri, readBinaryData, page_id, column_name, tab
                     alert('Download page is completed');
                 }
             });
-             if (readBinaryData) {
+            if (readBinaryData) {
                 // Read the file...
                 // readBinaryFile(entry);
             } else {
@@ -68,9 +73,9 @@ function file_transfer(fileEntry, uri, readBinaryData, page_id, column_name, tab
             }
         },
         function (error) {
-            alert("download error source " + error.source);
+            //alert("download error source " + error.source);
             alert("download error target " + error.target);
-            alert("upload error code" + error.code);
+            //alert("upload error code" + error.code);
         },
         null, // or, pass false
         {
@@ -85,18 +90,18 @@ function file_transfer_child_pages(fileEntry, uri, readBinaryData, id, column_na
 
     var fileTransfer = new FileTransfer();
     var fileURL = fileEntry.toURL();
-   
+
     fileTransfer.download(
         uri,
         fileURL,
         function (entry) {
             db.transaction(function (tx) {
                 tx.executeSql('update ' + table_name + ' set ' + column_name + ' = ? where id = ? and user_id = ?', [entry.toURL(), id, user.id]);
-                if (column_name == 'pdf_name') {
+                if (column_name == 'video_name') {
                     alert('Download for subpages is completed!!');
                 }
             });
-             if (readBinaryData) {
+            if (readBinaryData) {
                 // Read the file...
                 // readBinaryFile(entry);
             } else {
@@ -105,9 +110,9 @@ function file_transfer_child_pages(fileEntry, uri, readBinaryData, id, column_na
             }
         },
         function (error) {
-            alert("download error source " + error.source);
-            alert("download error target " + error.target);
-            alert("upload error code" + error.code);
+           // alert("download error source " + error.source);
+           alert("download error target " + error.target);
+            //alert("upload error code" + error.code);
         },
         null, // or, pass false
         {
@@ -224,7 +229,7 @@ function downloadpageoffline(id) {
                                 child_page.video_name]
                                 , function (tx, result) {
                                     count++;
-                                    downloadChildImages(child_page.id, child_page.image_name, child_page.pdf_name);
+                                    downloadChildImages(child_page.id, child_page.image_name, child_page.pdf_name, child_page.video_name);
                                     if (count == pages.length) {
                                         //Download all the images from pages and child_pages table
                                         downloadImages(image_name, image_thumb_name, place_id,image_name_icon);
@@ -245,28 +250,31 @@ function downloadpageoffline(id) {
             }
     }
 
-    function downloadChildImages(child_page_id, child_image_name, child_pdf_name){
+    function downloadChildImages(child_page_id, child_image_name, child_pdf_name,video_name) {
         var column_name = 'image_name';
         var table_name = 'child_pages';
         if (child_image_name !== null)
-            download(child_image_name, child_page_id, column_name, table_name);
-        column_name = 'pdf_name';    
+            download(child_image_name, child_page_id, column_name, table_name,false);
+        column_name = 'pdf_name';
         if (child_pdf_name !== null)
-            download(child_pdf_name, child_page_id, column_name, table_name);
+            download(child_pdf_name, child_page_id, column_name, table_name,false);
+        column_name = 'video_name';
+        if (video_name !== null)
+            download(video_name, child_page_id, column_name, table_name,true);
     }
 
     function downloadImages(image_name, image_thumb_name, place_id,image_name_icon) {
         var column_name = 'image_name';
         var table_name = 'pages';
         if (image_name !== null)
-        download(image_name, place_id, column_name, table_name);
+            download(image_name, place_id, column_name, table_name,false);
 
         var column_name = 'image_name_icon';
         if (image_name_icon !== null)
-        download(image_name_icon, place_id, column_name, table_name);
+            download(image_name_icon, place_id, column_name, table_name,false);
 
         if (image_name_icon !== null)
-        var column_name = 'image_name_thumb';
-        download(image_thumb_name, place_id, column_name, table_name);
+            var column_name = 'image_name_thumb';
+        download(image_thumb_name, place_id, column_name, table_name,false);
     }
 }
