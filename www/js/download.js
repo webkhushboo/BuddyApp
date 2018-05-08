@@ -17,14 +17,14 @@ document.addEventListener('deviceready', function () {
 
 });
 
-function download(img, page_id, column_name, table_name,video_flag) {
+function download(img, page_id, column_name, table_name, video_flag) {
     window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function (fs) {
 
         var url = "http://res.cloudinary.com/buddy-industries-cc/image/upload/c_fill,h_900,w_1600/" + img + ".jpg";
         var extension = ".jpg";
-        if(video_flag){
-           url ="http://res.cloudinary.com/buddy-industries-cc/video/upload/c_limit,w_360/e_loop/" + img + ".gif";
-           extension =".gif";
+        if (video_flag) {
+            url = "http://res.cloudinary.com/buddy-industries-cc/video/upload/c_limit,w_360/e_loop/" + img + ".gif";
+            extension = ".gif";
         }
         var random_string = Math.floor(Math.random() * 1012534);
         fs.root.getFile(img + random_string + extension, {
@@ -110,8 +110,8 @@ function file_transfer_child_pages(fileEntry, uri, readBinaryData, id, column_na
             }
         },
         function (error) {
-           // alert("download error source " + error.source);
-           alert("download error target " + error.target);
+            // alert("download error source " + error.source);
+            alert("download error target " + error.target);
             //alert("upload error code" + error.code);
         },
         null, // or, pass false
@@ -168,7 +168,7 @@ function downloadpageoffline(id) {
                                     data.place.app_background,
                                     data.place.image_name_icon],
                                     function (tx, result) {
-                                        insertChildPagesInfoToDB(data.pages, data.place.image_name, data.place.image_name_thumb, data.place.id,data.place.image_name_icon);
+                                        insertChildPagesInfoToDB(data.pages, data.place.image_name, data.place.image_name_thumb, data.place.id, data.place.image_name_icon);
                                     },
                                     function (error) {
                                         //alert('Error occurred');
@@ -192,7 +192,7 @@ function downloadpageoffline(id) {
         });
     });
 
-    function insertChildPagesInfoToDB(pages, image_name, image_thumb_name, place_id,image_name_icon) {
+    function insertChildPagesInfoToDB(pages, image_name, image_thumb_name, place_id, image_name_icon) {
         db.transaction(function (tx) {
             var count = 0;
             $.each(pages, function (index, value) {
@@ -230,9 +230,10 @@ function downloadpageoffline(id) {
                                 , function (tx, result) {
                                     count++;
                                     downloadChildImages(child_page.id, child_page.image_name, child_page.pdf_name, child_page.video_name);
+                                    downloadAllImagesFromDetails(child_page.detail);
                                     if (count == pages.length) {
                                         //Download all the images from pages and child_pages table
-                                        downloadImages(image_name, image_thumb_name, place_id,image_name_icon);
+                                        downloadImages(image_name, image_thumb_name, place_id, image_name_icon);
                                     }
                                 },
                                 function (error) {
@@ -250,31 +251,71 @@ function downloadpageoffline(id) {
             }
     }
 
-    function downloadChildImages(child_page_id, child_image_name, child_pdf_name,video_name) {
+    function downloadChildImages(child_page_id, child_image_name, child_pdf_name, video_name) {
         var column_name = 'image_name';
         var table_name = 'child_pages';
         if (child_image_name !== null)
-            download(child_image_name, child_page_id, column_name, table_name,false);
+            download(child_image_name, child_page_id, column_name, table_name, false);
         column_name = 'pdf_name';
         if (child_pdf_name !== null)
-            download(child_pdf_name, child_page_id, column_name, table_name,false);
+            download(child_pdf_name, child_page_id, column_name, table_name, false);
         column_name = 'video_name';
         if (video_name !== null)
-            download(video_name, child_page_id, column_name, table_name,true);
+            download(video_name, child_page_id, column_name, table_name, true);
     }
 
-    function downloadImages(image_name, image_thumb_name, place_id,image_name_icon) {
+    function downloadImages(image_name, image_thumb_name, place_id, image_name_icon) {
         var column_name = 'image_name';
         var table_name = 'pages';
         if (image_name !== null)
-            download(image_name, place_id, column_name, table_name,false);
+            download(image_name, place_id, column_name, table_name, false);
 
         var column_name = 'image_name_icon';
         if (image_name_icon !== null)
-            download(image_name_icon, place_id, column_name, table_name,false);
+            download(image_name_icon, place_id, column_name, table_name, false);
 
         if (image_name_icon !== null)
             var column_name = 'image_name_thumb';
-        download(image_thumb_name, place_id, column_name, table_name,false);
+        download(image_thumb_name, place_id, column_name, table_name, false);
     }
+}
+
+function downloadAllImagesFromDetails(details) {
+    var elem = document.createElement("div");
+    elem.innerHTML = details;
+
+    var images = elem.getElementsByTagName("img");
+
+    for (var i = 0; i < images.length; i++) {
+        downloadImageWithUrl(images[i].src);
+    }
+}
+
+function downloadImageWithUrl(url) {
+    window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function (fs) {
+        var fileName = url.substring(url.lastIndexOf("/") + 1, url.length);
+        fs.root.getFile(fileName, {
+            create: true,
+            exclusive: false
+        }, function (fileEntry) {
+            var fileTransfer = new FileTransfer();
+            var fileURL = fileEntry.toURL();
+
+            fileTransfer.download(
+                encodeURI(url),
+                fileURL,
+                function (entry) {
+                  console.log("File downloaded !!" ,entry);
+                },
+                function (error) {
+                   alert("Error is file download !!" + error.target);
+                },
+                null,
+                {
+                }
+            );
+
+        }, onErrorCreateFile);
+
+    }, onErrorLoadFs);
 }

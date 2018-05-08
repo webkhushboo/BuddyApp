@@ -769,9 +769,10 @@
 
         function addPageDetailOffline(jsonArray) {
             var windowWidth = $(window).width();
-
+            //Replace all https:// images to downloaded images
+            var details = replaceAllDetailsImagesInOfflineMode(jsonArray['detail']); 
             if (jsonArray['page_type_id'] == 1) {
-                var innerHtml = '<div class="pageInfo steps' + jsonArray['id'] + '"><div class="pageContainer">' + jsonArray['detail'] + '</div></div>';
+                var innerHtml = '<div class="pageInfo steps' + jsonArray['id'] + '"><div class="pageContainer">' + details + '</div></div>';
             }
             else if (jsonArray['page_type_id'] == 2) {
                 var galleryImageHtml = '';
@@ -814,7 +815,7 @@
             }
             else if (jsonArray['page_type_id'] == 5) {
                 var innerHtml = '<div class="pageInfo steps' + jsonArray['id'] + '">' +
-                    '<video style="width:100%" controls poster="'+ jsonArray['video_name'] + '">' +
+                    '<video style="width:100%" controls poster="' + jsonArray['video_name'] + '">' +
                     '<source src=' + jsonArray['video_name'] + 'type="video/mp4"/>' +
                     '<source src=' + jsonArray['video_name'] + 'type="video/ogg"/>' +
                     '<source src=' + jsonArray['video_name'] + 'type="video/webm"/>' +
@@ -860,6 +861,21 @@
             $('#logoIcon img').attr('src', pageDetails.image_name_icon);
 
             resizeScreenCorrectly();
+        }
+
+        function replaceAllDetailsImagesInOfflineMode(details) {
+            var elem = document.createElement("div");
+            elem.innerHTML = details;
+
+            var images = elem.getElementsByTagName("img");
+
+            for (var i = 0; i < images.length; i++) {
+                var url = images[i].src;
+                var fileName = url.substring(url.lastIndexOf("/") + 1, url.length);
+                images[i].src = "file:///data/user/0/app.buddy.na/files/files/" + fileName;
+            }
+
+            return elem.innerHTML;
         }
     </script>
 
