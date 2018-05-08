@@ -61,7 +61,7 @@ function file_transfer(fileEntry, uri, readBinaryData, page_id, column_name, tab
             db.transaction(function (tx) {
                 tx.executeSql('update ' + table_name + ' set ' + column_name + ' = ? where page_id = ? and user_id = ?', [entry.toURL(), page_id, user.id]);
                 if (column_name == 'image_name_thumb') {
-                    alert('Download page is completed');
+                    console.log('Download page is completed');
                 }
             });
             if (readBinaryData) {
@@ -98,7 +98,10 @@ function file_transfer_child_pages(fileEntry, uri, readBinaryData, id, column_na
             db.transaction(function (tx) {
                 tx.executeSql('update ' + table_name + ' set ' + column_name + ' = ? where id = ? and user_id = ?', [entry.toURL(), id, user.id]);
                 if (column_name == 'video_name') {
-                    alert('Download for subpages is completed!!');
+                    SpinnerPlugin.activityStop(function () {
+                        alert('Downloading completed!!');
+                    }, function () {
+                    });
                 }
             });
             if (readBinaryData) {
@@ -229,6 +232,11 @@ function downloadpageoffline(id) {
                                 child_page.video_name]
                                 , function (tx, result) {
                                     count++;
+
+                                    //start the downloading spinner
+                                    var options = { dimBackground: true };
+                                    SpinnerPlugin.activityStart("Downloading in progress...", options);
+
                                     downloadChildImages(child_page.id, child_page.image_name, child_page.pdf_name, child_page.video_name);
                                     downloadAllImagesFromDetails(child_page.detail);
                                     if (count == pages.length) {
@@ -305,10 +313,10 @@ function downloadImageWithUrl(url) {
                 encodeURI(url),
                 fileURL,
                 function (entry) {
-                  console.log("File downloaded !!" ,entry);
+                    //console.log("File downloaded !!" ,entry);
                 },
                 function (error) {
-                   alert("Error is file download !!" + error.target);
+                    alert("Error is file download !!" + error.target);
                 },
                 null,
                 {
