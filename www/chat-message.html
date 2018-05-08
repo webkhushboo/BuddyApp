@@ -1,0 +1,589 @@
+﻿<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <!--<meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *">-->
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+
+
+	<title>Mobile App</title>
+
+	<link href="css/bootstrap.min.css" rel="stylesheet">
+	<link href="css/loading.css" rel="stylesheet">
+	<script src="js/jquery-3.2.1.min.js"></script>
+
+
+    <link href="css/shared.css" rel="stylesheet">
+    <script type="text/javascript" src="js/shared.js"></script>
+
+	<script type="text/javascript" src="js/simpleStorage.js"></script>
+	<script type="text/javascript" src="js/storageScript.js"></script>
+	<script type="text/javascript" src="js/validateSignIn.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	
+	<link rel="stylesheet" href="css/font-awesome.min.css">
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1 initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	
+
+    <link href="css/shared.css" rel="stylesheet">
+    <script type="text/javascript" src="js/shared.js"></script>
+
+	<style>
+		html, body{height: 100%}
+		body{ background: #FBCD0D; max-width: 460px; overflow: hidden}
+		
+		#logo{ text-align: center; width: 100%; margin: 20px 0}
+		#logo img{ max-width: 80%}
+		
+		#header{width: 100%; height: 50px; background: #FBCD0D; border-bottom: 1px solid #7C7C7C; position: fixed; left: 0; top: 0; z-index: 100}
+		
+		
+		
+		#bottomBar{ height: 50px; width: 100%; background: #FFF; position: absolute; left: 0; bottom: 0; text-align: center}
+		#bottomBar img{height: 25px; margin-top: 12px}
+		#bottomBar div{margin: 0; padding: 0}
+	</style>
+	
+	<style>
+		.mytext{
+			border:0;padding:10px;background:whitesmoke;
+		}
+		
+		.macro{
+			margin-top:5px; width:100%; border-radius:5px; padding:5px; display:flex;
+		}
+		.msj-rta{
+			float:right;background:whitesmoke;
+		}
+		.msj{
+			float:left;background:white;
+		}
+		.frame{
+			background: #E2E2E2;
+			height:100%;
+			overflow:hidden;
+			padding:0;
+		}
+		.frame > div:last-of-type{
+			position:absolute;bottom:60px;width:100%;display:flex;
+		}
+		.frame ul {
+			width:100%;
+			list-style-type: none;
+			padding:18px;
+			position:absolute;
+			bottom:32px;
+			display:flex;
+			flex-direction: column;
+			max-height: 100%;
+			overflow-y: scroll;
+			top: 50px
+
+		}
+        .seen {
+            padding-left: 15px; float:right
+        }
+
+        .seen img {
+            padding-bottom: 3px;
+            height: 10px
+        }
+
+
+            .seen img:nth-child(2) {
+                margin-left: -5px
+            }
+
+        .myChatContainer small{font-size:11px; color:#999}
+        
+        .theirChatContainer small {
+            font-size: 11px;
+            color: #999
+        }
+	</style>
+    <script src="https://js.pusher.com/4.1/pusher.min.js"></script>
+
+
+	<script type="text/javascript">
+        
+        var readAll = false;
+
+        var inboxId = window.location.hash.substr(1);
+
+        function startListening() {
+            Pusher.logToConsole = true;
+
+            var pusher = new Pusher('ec6eac72dd5b43693e21', {
+                cluster: 'ap2',
+                encrypted: true
+            });
+
+            var channel = pusher.subscribe('chat' + inboxId);
+            channel.bind('my-event', function (data) {
+                //alert(data.message);
+                addMessage(data);
+
+                readAll = false;
+            });
+        }
+
+		var audio = new Audio('audio/Cool-sms.mp3');
+        var myName = ''; 
+		//alert(inboxId);
+		function startChatInfo()
+		{
+			$.ajax({
+				type: "POST",
+				url: 'http://buddy.na/api/getinboxinfo',
+				data: {inbox_id: inboxId}, // serializes the form's elements.
+                success: function (data) {
+
+                    myName = data.user.name; 
+					//$('#inboxToken').val(data.unique_token);
+					//alert(data.unique_token);
+					//alert($('#inboxToken').val());
+					//window.location = 'chat-message.html#'+data.inbox.id;
+                    getHistoryInfo();
+
+                    startListening();
+				},
+				error: function(data){
+					//$('#loading').fadeOut();
+					//alert('No Internet');
+				}
+			});	
+        }
+
+        $(document).click(function () {
+            if (readAll == false) { 
+                readAllMessages();
+            }
+        });
+
+
+        function readAllMessages() {
+
+            
+
+            $.ajax({
+                type: "POST",
+                url: 'http://buddy.na/api/readallmessages',
+                data: { inbox_id: inboxId, user_id: user.id }, // serializes the form's elements.
+                success: function (data) {
+                    readAll = true;
+                },
+                error: function (data) {
+                    setTimeout(readAllMessages, 1000);
+                    //$('#loading').fadeOut();
+                    //alert('No Internet');
+                }
+            });
+
+        }
+
+
+        function addMessage(messageData)
+        {
+            var delivered = '';
+
+            if (messageData.message_status_to == 'DELIVERED') {
+                delivered = 2;
+            }
+            else if (messageData.message_status_to == 'READ') {
+                //alert('it is read');
+                delivered = 3;
+            }
+            else {
+                delivered = 1;
+            }
+			
+			//alert(messageData.created_at.toString());
+			
+            if (messageData.user_id_from == user.id) {
+                insertChat("me", messageData.message, 0, messageData.created_at.date, delivered);
+            }
+            else {
+                insertChat("you", messageData.message, 0, messageData.created_at.date, delivered);
+            }
+        }
+
+        function getHistoryInfo()
+		{
+			$.ajax({
+				type: "POST",
+				url: 'http://buddy.na/api/checkmessages',
+				data: {inbox_id: inboxId, unique_token: $('#inboxToken').val(), user_id: $('#userIdInput').val()}, // serializes the form's elements.
+				success: function (data) {
+					
+					
+					if(data.update == true)
+					{
+						$('#inboxToken').val(data.unique_token);
+						
+                        $("#messageContainer").html('');
+						
+						for (var key in data.messages)
+						{
+							var delivered = '';
+							
+							if(data.messages[key].message_status_to == 'DELIVERED')
+							{
+								delivered = 2;	
+							}
+							else if(data.messages[key].message_status_to == 'READ')
+							{
+								//alert('it is read');
+								delivered = 3;	
+							}
+							else
+							{
+								delivered = 1;	
+							}
+							
+							
+							
+							if(data.messages[key].user_id_from == user.id)
+							{
+								insertChat("me", data.messages[key].message, 0, data.messages[key].created_at, delivered);  
+							}
+							else
+							{
+								insertChat("you", data.messages[key].message, 0, data.messages[key].created_at, delivered);  
+							}
+
+							//	
+						}
+					}
+					
+					if(data.alert == true)
+					{
+						audio.play();
+					}
+					
+					//setTimeout(checkNewMessages, 1000);
+					//$("#messageContainer").scrollTop($("#messageContainer")[0].scrollHeight);
+					//var mydiv = $("#messageContainer");
+					
+					//$('#inboxToken').val(data.unique_token);
+					//alert(data.unique_token);
+					//window.location = 'chat-message.html#'+data.inbox.id;
+				},
+				error: function(data){
+					//$('#loading').fadeOut();
+					//alert('No Internet');
+					setTimeout(checkNewMessages, 1000);
+				}
+			});		
+		}
+		
+		function resizeScreenCorrectly()
+		{
+			$('#messageContainer').css('max-height',$(window).height() - 170 );
+		}
+		
+		
+		$(document).ready(function(e) {
+			
+			
+			
+			resizeScreenCorrectly();
+			
+			$(window).on('resize', function(){
+				resizeScreenCorrectly();
+			});
+			
+			startChatInfo();
+			
+			$('#loadingContainer').fadeOut();
+			
+			$('#userIdInput').val(user.id);
+			$('#inbox_id').val(inboxId);
+			
+			
+			$('#sendMessageForm').submit(function(e){
+				e.preventDefault();
+				
+				//insertChat("me", $('#message').val(), 0, new Date($.now()), 1);  
+				$('#message').attr("readonly", "readonly"); 
+				$.ajax({
+					type: "POST",
+					url: 'http://buddy.na/api/sendmessage',
+					data: $('#sendMessageForm').serialize(), // serializes the form's elements.
+					success: function (data) {
+						
+						$('#message').val('');
+						$('#message').removeAttr("readonly"); 
+						
+						//window.location = 'chat-message.html#'+data.inbox.id;
+					},
+					error: function(data){
+						//$('#loading').fadeOut();
+						//alert('Some kind of error happened');
+					}
+				});	
+				
+			});
+			
+
+		});
+		
+		var me = {};
+        me.avatar = user.img_url;
+
+		var you = {};
+        you.avatar = "http://res.cloudinary.com/buddy-industries-cc/image/upload/v1521554630/buddy_wink.svg";
+
+                 
+
+		//-- No use time. It is a javaScript effect.
+		function insertChat(who, text, time = 0, messageTime, seen = 0){
+			
+			var control = "";
+			
+			var seenBlock = "";
+			
+			//alert(seen);
+			
+			switch(seen) {
+				case 1:
+					seenBlock = '<span class="seen"><img src="img/notSeen.svg" /></span>';
+					break;
+				case 2:
+					seenBlock = '<span class="seen"><img src="img/notSeen.svg" /><img src="img/notSeen.svg" /></span>';
+					break;
+				case 3:
+					seenBlock = '<span class="seen"><img src="img/seen.svg" /><img src="img/seen.svg" /></span>';
+					break;
+				default:
+					seenBlock = '';
+			}
+			
+			
+
+			if (who == "me"){
+
+                control = '<li class="myChatContainer" style="width:100%; margin-bottom:10px">'+
+                    '<div class="col-xs-10 col-sm-10 col-md-10" style= "border-radius:20px 20px 0 20px ; background:#C6C6C6; padding:10px 20px 0 20px; margin-bottom:10px">' +
+                    '<p>' + text +'</p>' +
+                    '<p><small class="chatTime" data-id="' + messageTime + '"></small>' + seenBlock + '</p>' +                   
+                    '</div >' +
+                    '<div class="col-xs-2 col-sm-2 col-md-2" style="text-align:right; margin:0; padding:0; padding-left:10px">' +
+                    '<img  style="width:100%;" src="' + me.avatar +'" />' +
+                    '</div>' +
+                    '</li >';      
+
+                /*
+				control = '<li style="width:100%;">' +
+								'<div class="msj-rta macro">' +
+									'<div class="text text-r">' +						
+										'<p><strong>'+myName+'</strong><br><br>'+text+'</p>' +
+										'<p><small>'+messageTime+'</small>'+seenBlock+'</p>' +
+									'</div>' +
+								'<div class="avatar" style="padding:0px 0px 0px 10px !important"><img class="img-circle" style="width:100%;" src="'+me.avatar+'" /></div>' +                                
+						  '</li>';
+                */
+            } else {
+
+                control = '<li class="theirChatContainer" style="width:100%; margin-bottom:10px">'+
+                    '<div style="margin:0; padding:0; padding-right:10px" class="col-xs-2 col-sm-2 col-md-2" style= "text-align:right" > '+
+                        '<img style="width:100%;" src="' + you.avatar +'" />'+
+                    '</div > '+
+                        '<div class="col-xs-10 col-sm-10 col-md-10" style="border-radius:20px 20px 20px 0 ; background:#FFF; padding:10px 20px 0 20px">'+
+                        '<p>' + text + '</p>' +
+                        '<p><small class="chatTime" data-id="' + messageTime + '"></small></p>' +
+                    '</div>'+
+                '</li>';
+                /*
+				control = '<li style="width:100%">' +
+								'<div class="msj macro">' +
+								'<div class="avatar"><img class="img-circle" style="width:100%;" src="'+ you.avatar +'" /></div>' +
+									'<div class="text text-l">' +
+										'<p><strong>Buddy</strong><br><br>'+ text +'</p>' +
+										'<p><small>'+messageTime+'</small></p>' +
+									'</div>' +
+								'</div>' +
+							'</li>';
+                */
+			}
+			                      
+            $("#messageContainer").append(control);
+			
+			$('#messageContainer').scrollTop(1000000);
+		}
+
+		function resetChat(){
+            $("#messageContainer").empty();
+		}
+
+		$(".mytext").on("keyup", function(e){
+			if (e.which == 13){
+				var text = $(this).val();
+				if (text !== ""){
+					insertChat("me", text);              
+					$(this).val('');
+				}
+			}
+		});
+
+		//-- Clear Chat
+		resetChat();
+
+        var _originalSize = $(window).width() + $(window).height()
+        $(window).resize(function () {
+            if ($(window).width() + $(window).height() != _originalSize) {
+                //console.log("keyboard show up");
+                //$(".copyright_link").css("position", "relative");
+
+                $('#bottomBar').hide();
+
+            } else {
+
+                $('#bottomBar').show();
+                //console.log("keyboard closed");
+                //$(".copyright_link").css("position", "fixed");
+            }
+        });
+		
+		function getCorrectTime()
+		{
+			$('.chatTime').each(function(){
+				var theChatDate = $(this).attr('data-id');
+				
+				var thisDateNow =  new Date(theChatDate);
+				
+				$(this).html(timeSince(thisDateNow));
+
+			});
+			
+			setTimeout(getCorrectTime, 1000);
+		}
+		
+		getCorrectTime();
+		
+		function timeSince(date) {
+
+		  var seconds = Math.floor((new Date() - date) / 1000);
+
+		  var interval = Math.floor(seconds / 31536000);
+
+		  if (interval > 1) {
+			return interval + " years";
+		  }
+		  interval = Math.floor(seconds / 2592000);
+		  if (interval > 1) {
+			return interval + " months";
+		  }
+		  interval = Math.floor(seconds / 86400);
+		  if (interval > 1) {
+			return interval + " days";
+		  }
+		  interval = Math.floor(seconds / 3600);
+		  if (interval > 1) {
+			return interval + " hours";
+		  }
+		  interval = Math.floor(seconds / 60);
+		  if (interval > 1) {
+			return interval + " minutes";
+		  }
+		  //return Math.floor(seconds) + " seconds";
+			return "Just now";
+		}
+		
+		//-- Print Messages
+		//insertChat("me", "Hello Tom...", 0, '2:09 PM', 1);  
+		//insertChat("you", "Hi, Pablo", 1500, '2:09 PM');
+		//insertChat("me", "What would you like to talk about today?", 3500, '2:09 PM', 2);
+		//insertChat("you", "Tell me a joke",7000, '2:09 PM');
+		//insertChat("me", "Spaceman: Computer! Computer! Do we bring battery?!", 9500, '2:09 PM', 3);
+		//insertChat("you", "LOL", 12000, '2:09 PM');
+		//insertChat("me", "Dude but you have to see that there is no other thing to do with that other thing, and you have to make sure that stuff is happening, because otherwise you can't do stuff that is not the stuff that is being done man, you know the stuff I'm talking about don't you? Yes, that stuff man!", 13000, '2:09 PM',1);
+
+
+		//-- NOTE: No use time on insertChat.
+	
+    </script>
+	
+</head>
+
+<body>
+	
+	<section id="header">
+		<div class="col-xs-2 col-sm-2 col-md-2">
+			<a href="inbox.html"><img style="height: 20px; margin: 13px 0 0 2px" src="img/goback.svg" /></a>
+		</div>
+		
+		<div class="col-xs-8 col-sm-8 col-md-8">
+			<h4 style="margin-top: 16px; text-align: center">ASK BUDDY</h4>
+		</div>
+		
+		<div class="col-xs-2 col-sm-2 col-md-2">
+			<img style="height: 20px; margin: 13px; float: right" src="img/menustack.svg" />
+		</div>
+	</section>
+	
+	<div id="loadingContainer">
+		<div class="loader"></div>
+	</div>
+	
+	<div class="col-xs-12 col-sm-12 frame">
+        
+		<ul id="messageContainer"></ul>
+		<div>
+			<div class="msj-rta macro" style="margin:0px 10px">                        
+				<div class="text text-r" style="background:whitesmoke !important; display: inline-block; width: 100%">
+					<form method="post" name="sendMessageForm" id="sendMessageForm">
+						<input name="inbox_id" id="inbox_id" type="hidden" />
+						<input name="user_id" id="userIdInput" type="hidden" />
+						<input name="inboxToken" id="inboxToken" type="hidden" />
+						
+						<div class="col-xs-9 col-sm-9" style="margin: 0; padding: 0">
+							<input id="message" name="message" style="width: 100%" class="mytext" placeholder="Type a message"/>
+						</div>
+						<div class="col-xs-3 col-sm-3" style="text-align: center; margin: 0; padding: 0">
+							<button style="background: none; border: none;"><img style=" max-width: 100%; background: #FBCD0D; width: 42px; height: 43px; border-radius:40px; padding: 5px 5px 5px 10px" src="img/icons/send-mail-icon_white.svg" /></button>
+						</div>
+					</form>
+				</div> 
+			</div>
+		</div>
+	</div>  
+	
+    <section id="bottomBar">
+        <div class="col-xs-1 col-sm-1 col-md-1"></div>
+        <div class="col-xs-2 col-sm-2 col-md-2">
+            <img id="openQR" src="img/icons/qrcode.svg" />
+        </div>
+        <div class="col-xs-2 col-sm-2 col-md-2">
+            <a href="inbox.html"><img src="img/icons/inbox.svg" /></a>
+        </div>
+        <div class="col-xs-2 col-sm-2 col-md-2">
+            <a href="start-new-chat.html"><img style="height: 50px; margin-top: 0" src="img/icons/buddy.svg" /></a>
+        </div>
+        <div class="col-xs-2 col-sm-2 col-md-2">
+            <img src="img/icons/case.svg" />
+        </div>
+        <div class="col-xs-2 col-sm-2 col-md-2">
+            <a href="sos.html"><img style="height: 13px; margin-top: 17px" src="img/icons/sos.svg" /></a>
+        </div>
+
+        <div class="col-xs-1 col-sm-1 col-md-1"></div>
+
+    </section>
+
+    <div id="qrCodeFrame">
+        <div id="closeFrame">x</div>
+        <iframe></iframe>
+    </div>
+
+    <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" src="scripts/platformOverrides.js"></script>
+    <script type="text/javascript" src="scripts/index.js"></script>
+
+</body>
+</html>

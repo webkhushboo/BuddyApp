@@ -1,0 +1,273 @@
+﻿<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <!--<meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *">-->
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+    
+
+	<title>Mobile App</title>
+
+	<link href="css/bootstrap.min.css" rel="stylesheet">
+	<link href="css/loading.css" rel="stylesheet">
+    
+
+	<script src="js/jquery-3.2.1.min.js"></script>
+	<script type="text/javascript" src="js/simpleStorage.js"></script>
+	<script type="text/javascript" src="js/storageScript.js"></script>
+	<script type="text/javascript" src="js/validateSignIn.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	
+    <link href="css/shared.css" rel="stylesheet">
+    <script type="text/javascript" src="js/shared.js"></script>
+    
+    
+    <script type="text/javascript" src="js/sqlstorage.js"></script>
+
+	<link rel="stylesheet" href="css/font-awesome.min.css">
+	
+
+	<style>
+		html, body{height: 100%; min-height:660px}
+		body{ background: #FFF}
+		
+		#logo{ text-align: center; width: 100%; margin: 20px 0}
+		#logo img{ max-width: 80%}
+		
+		
+
+        #imageHeaderContainer {
+            margin-top:50px;
+            width: 100%;            
+        }
+		#imageHeaderContainer img{ height: 200px; margin-top: 80px; margin-right: -20px}
+		
+		
+		#greeting{ text-align: center; font-weight: bold; font-size: 20px; margin: 20px 0}
+		#subGreeting{text-align: center}
+		
+		#startChat{  margin-top: 40px; background: #FFF; border: #C3C3C3 1px solid; padding: 10px; width: 90%; margin-left: 5%}
+		#startChat i{}
+		#startChat input{ width: 100%; border: none; background: none}
+
+        #submitNewChat button{border:none; background:none; width:100%; text-align:center}
+        #submitNewChat a {
+            display: block;
+            width: 100%;
+            text-align:center
+        }
+        #submitNewChat img{height:80px}
+
+        #message{width:100%; border:none}
+
+
+	</style>
+	
+	
+	
+	<script type="text/javascript">        
+
+        function auto_grow(element) {
+            element.style.height = "5px";
+            element.style.height = (element.scrollHeight) + "px";
+        }
+
+        $(document).ready(function (e) {            
+
+			$('#loadingContainer').fadeOut();
+
+			$('#userIdInput').val(user.id);
+			
+			$('#userName').html(user.name);			
+			
+			$('#startChatForm').submit(function(e){
+				e.preventDefault();
+				
+				$.ajax({
+					type: "POST",
+					url: 'http://buddy.na/api/startchat',
+					data: $('#startChatForm').serialize(), // serializes the form's elements.
+					success: function (data) {
+						
+						window.location = 'chat-message.html#'+data.inbox.id;
+					},
+					error: function(data){
+						$('#loading').fadeOut();
+						alert('Some kind of error happened');
+					}
+				});	
+				
+            });
+
+
+            var _originalSize = $(window).width() + $(window).height()
+            $(window).resize(function () {
+                if ($(window).width() + $(window).height() != _originalSize) {
+                    //console.log("keyboard show up");
+                    //$(".copyright_link").css("position", "relative");
+
+                    $('#bottomBar').hide();
+
+                } else {
+
+                    $('#bottomBar').show();
+                    //console.log("keyboard closed");
+                    //$(".copyright_link").css("position", "fixed");
+                }
+            });
+
+
+		});
+		
+		
+	
+    </script>
+	
+</head>
+
+<body>
+    <div id="loadingContainer">
+        <div id="loader"></div>
+    </div>
+    <script type="text/javascript" src="jsonanimated/splashscreen/lottie.js"></script>
+    <script type="text/javascript" src="js/loading.js"></script>
+
+	<section id="header">
+		<div class="col-xs-2 col-sm-2 col-md-2">
+			<!--<img style="height: 20px; margin: 13px 0 0 2px" src="img/goback.svg" />-->
+            <a style="color:#000" href="tel:999"><i style="font-size:20px; margin-top:13px" class="fa fa-phone" aria-hidden="true"></i></a>
+        </div>
+		
+		<div class="col-xs-8 col-sm-8 col-md-8">
+			<h4 style="margin-top: 16px; text-align: center"><img style="height:30px; margin-top:-5px" src="http://res.cloudinary.com/buddy-industries-cc/image/upload/v1520346624/travel_buddy_logo.svg" /></h4>
+		</div>
+		
+		<div class="col-xs-2 col-sm-2 col-md-2">
+            <a data-toggle="collapse" href="#infoMenu"><img style="height: 20px; margin: 13px; float: right" src="img/menustack.svg" /></a>
+		</div>
+	</section>
+
+    <div id="infoMenu" class="collapse">
+        <ul>
+            <li><a href="update.html">Update Profile</a></li>
+            <li><a href="list_of_cards.html">Edit payment methods</a></li>
+            <li><a href="logout.html">Logout</a></li>
+        </ul>
+    </div>
+	
+	<div id="imageHeaderContainer" style="background:#FBCD0D">
+       <div id="bm"></div>
+	</div>
+	
+    <section id="mainContainer">
+	    <div id="greeting">
+		    <span id="timeOfDay"></span> <strong id="userName"></strong>
+	    </div>
+	    <div id="subGreeting">
+		    Need anything today?
+	    </div>
+	
+	    <div class="col-xs-12 col-sm-12">
+		    <form id="startChatForm" method="post">
+			    <div class="row" id="startChat" style="padding-top:18px">
+
+					    <input name="user_id" id="userIdInput" type="hidden" />
+					    <div class="col-xs-2 col-sm-1 col-md-1">
+						    <i class="fa fa-camera" aria-hidden="true"></i>
+					    </div>
+					    <div class="col-xs-8 col-sm-10 col-md-10" style="margin:0; padding:0">
+						    <textarea style="height:24px" onkeyup="auto_grow(this)" id="message" placeholder="Type your request here" name="message" required></textarea>
+					    </div>
+					    <div class="col-xs-2 col-sm-1 col-md-1" style="text-align: right">
+						    <i class="fa fa-microphone" aria-hidden="true"></i>
+					    </div> 
+
+
+			    </div>
+                <div style="text-align:center; margin-top:10px">
+                    <button class="btn btn-default" type="submit">Start new Chat</button>
+                </div>
+                
+               <!--
+                <div id="submitNewChat" class="col-md-12" style="margin-top: 20px; display: flex; position:fixed; bottom:55px; z-index:100; width:100%">
+                    <a href="tel:999"><img src="img/icons/startChatYellow.svg" /></a>
+                </div>
+              -->
+                
+                <div class="col-md-12"  style=" position:fixed; width:100%; text-align:center;bottom:60px">
+                    <img style="height:80px; " src="img/abenteuer.svg" />
+                </div>
+            </form>
+	    </div> 
+    </section>
+
+    <section id="bottomBar">
+        <div class="col-xs-1 col-sm-1 col-md-1"></div>
+        <div class="col-xs-2 col-sm-2 col-md-2">
+            <img id="openQR" src="img/icons/qrcode.svg" />
+        </div>
+        <div class="col-xs-2 col-sm-2 col-md-2">
+            <a href="inbox.html"><img src="img/icons/inbox.svg" /></a>
+        </div>
+        <div class="col-xs-2 col-sm-2 col-md-2">
+            <div style="background:#FBCD0D; margin:0 10px; height:50px">
+                <img style="height: 40px; margin-top: 5px" src="images/buddy_icon_bottom.svg" />
+            </div>
+            
+        </div>
+        <div class="col-xs-2 col-sm-2 col-md-2">
+            <a href="pages.html"><i style="font-size:30px; line-height:50px; color:#666" class="fa fa-plus" aria-hidden="true"></i></a>
+        </div>
+        <div class="col-xs-2 col-sm-2 col-md-2">
+            <a href="sos.html"><img style="height: 13px; margin-top: 17px" src="img/icons/sos.svg" /></a>
+        </div>
+
+        <div class="col-xs-1 col-sm-1 col-md-1"></div>
+
+    </section>
+
+    <div  id="qrCodeFrame">
+        <div id="closeFrame">x</div>
+        <iframe></iframe>
+    </div>
+    
+
+    <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" src="scripts/platformOverrides.js"></script>
+    <script type="text/javascript" src="scripts/index.js"></script>
+    <script>
+        var animation = bodymovin.loadAnimation({
+            container: document.getElementById('bm'),
+            renderer: 'svg',
+            loop: true,
+            autoplay: true,
+            path: 'jsonanimated/splashscreen/introduction.json'
+        })
+
+        $('#timeOfDay').html(getGreetingTime());
+
+
+        function getGreetingTime() {
+            var today = new Date()
+            var curHr = today.getHours()
+            var time = null;
+
+            if (curHr < 12) {
+                var time = "Morning";
+            } else if (curHr < 18) {
+                var time = "Afternoon";
+            } else {
+                var time = "Evening";
+            }
+
+            return time;
+        }
+
+
+    </script>
+</body>
+</html>

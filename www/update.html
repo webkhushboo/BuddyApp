@@ -1,0 +1,231 @@
+﻿<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <!--<meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *">-->
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+    
+    <title>Mobile App</title>
+
+    <script>
+        var pictureTaken = false;
+    </script>
+
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    
+    <script src="js/jquery-3.2.1.min.js"></script>
+
+    <script type="text/javascript" src="js/simpleStorage.js"></script>
+    <script type="text/javascript" src="js/storageScript.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+
+    <script type="text/javascript" src="jsonanimated/splashscreen/lottie.js"></script>
+    <link href="css/shared.css" rel="stylesheet">
+    <script type="text/javascript" src="js/shared.js"></script>
+
+    <style>
+        html, body {
+            height: 100%
+        }
+
+
+        #logo {
+            text-align: center;
+            width: 100%;
+            padding: 50px 0;
+            
+        }
+
+        #logo img {
+            max-width: 30%
+        }
+
+        #step1, #step2, #step3, #step4{ padding:20px}
+
+        .yellowBorderInput input::placeholder {
+            color:#666;
+        }
+
+        .yellowBorderInput input {
+            width: 100%;
+            height: 40px;
+            text-align: center;
+            border: 2px solid #FFF;
+            background:rgba(255,255,255,0.8);
+            margin-bottom:10px;
+            color:#333
+        }
+
+        .yellowBorderInput select {
+            width: 100%;
+            height: 40px;
+            text-align: center;
+            border: 2px solid #FFF;
+            background: none;
+            margin-bottom: 10px;
+            text-align-last: center;
+        }
+
+        .yellowButton {
+            width: 100%;
+            height: 40px;
+            margin-top: 5px;
+            border: none;
+            background: #FFF;
+            color: #FBCD0D;
+            line-height: 40px;
+            text-align: center;
+            font-weight: bold;
+            cursor: pointer
+        }
+
+        #signupForm {
+            background: #FBCD0D;
+            padding: 20px 10px
+        }
+    </style>
+
+    
+
+    <script type="text/javascript">
+
+	    $(document).ready(function(e) {
+            var user = getValueFromSession('user');
+
+            $('#user_id').val(user.id);
+            $('#name').val(user.name);
+            $('#email').val(user.email);
+            $('#cellphone').val(user.cellphone);
+
+            $('#loading').fadeOut();
+
+
+
+            $('#signupForm').submit(function (e) {
+                e.preventDefault();
+
+                $('#loading').fadeIn();
+
+                $.ajax({
+                    type: "POST",
+                    url: 'http://swakopmund.life/ajax/mobile/profile/update',
+                    data: $('#signupForm').serializeArray(), // serializes the form's elements.
+                    success: function (data) {
+                        //alert(data);
+
+                        if (data.success == true) {
+                            //alert(data.message);
+                            //window.location = 'login.html';
+
+                            addKeyValueToSession('user', data.user);
+                            addKeyValueToSession('device', 0);
+                            addKeyValueToSession('passcode_time', Date.now());
+
+                            $('.userId').val(data.user.id);
+
+                            window.location = 'index.html';
+
+                        }
+                        else {
+                            alert(data.message);
+                        }
+                        $('#loading').fadeOut();
+                    },
+                    error: function (data) {
+                        alert('Something went wrong');
+                        $('#loading').fadeOut();
+                    }
+
+                });
+
+
+            });
+            
+        });
+   
+
+    </script>
+
+</head>
+
+<body>
+    <div id="loadingContainer">
+        <div id="loader"></div>
+    </div>
+    <script type="text/javascript" src="jsonanimated/splashscreen/lottie.js"></script>
+    <script type="text/javascript" src="js/loading.js"></script>
+
+
+    <section id="header">
+        <div class="col-xs-2 col-sm-2 col-md-2">
+            <img style="height: 20px; margin: 13px 0 0 2px" src="img/goback.svg" />
+        </div>
+
+        <div class="col-xs-8 col-sm-8 col-md-8">
+            <h4 style="margin-top: 16px; text-align: center">ASK BUDDY</h4>
+        </div>
+
+        <div class="col-xs-2 col-sm-2 col-md-2">
+            <a data-toggle="collapse" href="#infoMenu"><img style="height: 20px; margin: 13px; float: right" src="img/menustack.svg" /></a>
+        </div>
+    </section>
+
+    <div id="infoMenu" class="collapse" style="z-index:999; position:absolute">
+        <ul>
+            <li><a href="update.html">Update Profile</a></li>
+            <li><a href="list_of_cards.html">Edit payment methods</a></li>
+            <li><a href="logout.html">Logout</a></li>
+        </ul>
+    </div>
+
+    
+    <div id="infoMenu" class="collapse" style="z-index:999; position:absolute">
+        <ul>
+            <li><a href="index.html">Home Page</a></li>
+            <li><a href="places.html">Places</a></li>
+            <li><a href="events.html">Events</a></li>
+            <li><a href="transport.html">Transport</a></li>
+            <li><a href="logout.html">Logout</a></li>
+        </ul>
+    </div>
+    
+    <div class="col-md-12" style="padding:0; margin-top:50px">
+        <div id="logoContainer" style="text-align:center; background:#FFF;">
+            <img style="width:30%; margin:30px 0" src="img/buddyFace.svg" />
+        </div>
+
+        <form name="signupForm" id="signupForm" method="post">
+            
+            <h4 style="text-align:center; color:#FFF">CREATE AN ACCOUNT</h4>
+
+            <div class="yellowBorderInput">
+                <input id="user_id" type="hidden" name="user_id">  
+                <input placeholder="Full name" id="name" type="text" name="name"required="required">  
+                <input placeholder="Email" id="email" type="email" name="email" data-name="email" required="required" readonly> 
+                <input placeholder="Mobile Number" id="cellphone" type="number" name="cellphone" data-name="cellphone" required="required">
+                <input placeholder="Password (Type if you want to change)" id="password" type="password" name="password" data-name="password">
+            </div>            
+            <button type="submit" class="yellowButton proceed" data-id="1"> Proceed </button>
+            <a style="width:100%; padding:20px 0; display:block; margin-top:10px; line-height:0" href="start-new-chat.html" class="yellowButton" data-id="1"> Cancel </a>
+
+            <div style="text-align:center">
+                <a class="btn btn-primary" style="background:#FFF; color:#333; border:1px solid #FBCD0D; margin-top:10px" href="list_of_cards.html">Edit Payment Methods</a>
+            </div>
+        </form>
+
+
+    </div>
+
+   <p style="text-align:center; color:#FFF" class="link-upper">Already have an account? <a style="color:#FFF" href="login.html">Sign in</a></p>
+
+    <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" src="scripts/platformOverrides.js"></script>
+    <script type="text/javascript" src="scripts/index.js"></script>
+</body>
+</html>

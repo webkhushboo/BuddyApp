@@ -1,0 +1,552 @@
+﻿<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <!--<meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *">-->
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+    
+    <title>Mobile App</title>
+
+	<link href="css/bootstrap.min.css" rel="stylesheet">
+	<link href="css/loading.css" rel="stylesheet">
+	<script src="js/jquery-3.2.1.min.js"></script>
+	<script type="text/javascript" src="js/simpleStorage.js"></script>
+	<script type="text/javascript" src="js/storageScript.js"></script>
+	<script type="text/javascript" src="js/validateSignIn.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	
+	<link rel="stylesheet" href="css/font-awesome.min.css">
+	
+
+    <link href="css/shared.css" rel="stylesheet">
+    <script type="text/javascript" src="js/shared.js"></script>
+
+	<style>
+		html, body{height: 100%}
+		body{ background: #D8D8D8; overflow: hidden}
+
+		
+		#logo{ text-align: center; width: 100%; margin: 20px 0}
+		#logo img{ max-width: 80%}
+		
+		#header{width: 100%; height: 50px; background: #FBCD0D; border-bottom: 1px solid #7C7C7C; position: fixed; left: 0; top: 0; z-index: 100}
+		
+		#imageHeaderContainer{ width: 100%; height: 300px; background: #000000; text-align: right; overflow: hidden}
+		#imageHeaderContainer img{ height: 200px; margin-top: 80px; margin-right: -20px}
+		
+		
+		#greeting{ text-align: center; font-weight: bold; font-size: 20px; margin: 20px 0}
+		#subGreeting{text-align: center}
+		
+		#startChat{  margin-top: 40px; background: #FFF; border: #C3C3C3 1px solid; padding: 10px; width: 90%; margin-left: 5%}
+		#startChat i{}
+		#startChat input{ width: 100%; border: none; background: none}
+		
+		.bubbleContainer{
+			user-drag: none; 
+			user-select: none;
+			-moz-user-select: none;
+			-webkit-user-drag: none;
+			-webkit-user-select: none;
+			-ms-user-select: none;
+		}
+		
+		.tasks{
+			position: relative;
+			user-drag: none; 
+			user-select: none;
+			-moz-user-select: none;
+			-webkit-user-drag: none;
+			-webkit-user-select: none;
+			-ms-user-select: none;
+		}
+		
+		.bubbleContainer{ background: #FFF; width: 100%; min-height: 60px; display: table; padding-top:10px; color:#333}
+
+            .bubbleContainer:nth-child(odd) {
+                background:#e6e6e6;
+            }
+
+
+		.bubbleContainer img{height: 40px; }
+            
+            .bubbleContainer h4 {
+                padding:0;
+                margin:0;
+                font-size:15px;
+
+            }
+
+        .bubbleContainer p {
+            color:#999;
+        }
+
+        #chatContainerInbox, #chatContainerTasks, #chatContainerHistory, #chatContainerVouchers {
+            margin: 0;
+            margin-top: 15px;
+            overflow-y: scroll;
+            width: 100%
+        }
+		
+		
+		.notificationCounter{position: absolute; top:0px; right: -10px; background: #D1181B; width: 20px; height: 20px; text-align: center; line-height: 20px; color: #FFF; border-radius:50px; font-size:10px}
+        
+        #startChatContainer {
+            height: 120px;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        #submitNewChat a {
+            display: block;
+            width: 100%;
+            text-align: center
+        }
+
+        #startChatContainer img{
+            cursor:pointer
+        }
+
+        .toggleSelected {
+            background: #FBCD0D;
+            color: #333;
+            padding-right: 2px;
+        }
+
+        #topQuickbar{ font-size:11px; color:#999}
+
+            #topQuickbar div span {
+                display:block;
+                width:100%;
+                border-right: 2px solid #FBCD0D;
+            }
+
+            
+            #topQuickbar div:hover {
+            }
+
+        .toggleChatTypeContainer{display:none}
+		
+		.bubbleContainer .btnOverlay{
+			width: 40%;
+			padding: 10px 0;			
+			background:#D73538;
+			display: block;
+			position: absolute;
+			right: -40%;
+			z-index: 100;
+			color: #FFF;
+			text-align: center;
+			border-radius: 10px 0 0 10px
+			
+		}
+		
+		.tasks .btnOverlay{
+			width: 40%;
+			padding: 10px 0;			
+			background:#D73538;
+			display: block;
+			position: absolute;
+			right: -40%;
+			z-index: 100;
+			color: #FFF;
+			text-align: center;
+			border-radius: 10px 0 0 10px;
+			top: 80px;
+			
+		}
+		
+		.dateLabel{
+			width: 40px;
+			height: 70px;
+			background: url(img/icons/dateLabel.svg) no-repeat center;
+			background-size:40px 70px;
+			margin: auto;	
+			text-align: center;
+		}
+		
+		.dateLabel h4{color:#FFF; margin: 0; font-size: 20px; padding-top:12px}
+		.dateLabel h5{color:#FFF; margin: 0; font-size:14px}
+		
+		.taskContainerText{ width: 90%; background: #FFF; border-radius:10px; margin-top: 10px; padding: 20px; margin: 0 5% }
+		
+		
+	</style>
+	
+    <script src="https://js.pusher.com/4.1/pusher.min.js"></script>
+	
+	<script type="text/javascript">
+		
+		function resizeScreenCorrectly()
+		{
+			$('#chatContainerInbox').css('height',$(window).height() - 240 );
+			$('#chatContainerHistory').css('height',$(window).height() - 240 );
+			$('#chatContainerTasks').css('height',$(window).height() - 240 );
+			$('#chatContainerVouchers').css('height',$(window).height() - 240 );
+			//$('#chatContainer').css('height',$(window).height() - 240 );
+        }
+
+        var inboxId = window.location.hash.substr(1);
+
+
+        startListening();
+
+        function startListening() {
+            Pusher.logToConsole = true;
+
+            var pusher = new Pusher('ec6eac72dd5b43693e21', {
+                cluster: 'ap2',
+                encrypted: true
+            });
+
+            var channel = pusher.subscribe('userNotification' + user.id);
+            channel.bind('my-event', function (data) {
+                //alert(data.message);
+                //addMessage(data);
+
+                var currentNotification = $('#messageNotication' + data.inbox_id).html();
+                currentNotification++;
+
+                $('#messageNotication' + data.inbox_id).html(currentNotification);
+                $('#messageNotication' + data.inbox_id).show();
+
+
+            });
+        }
+
+		
+		$(document).ready(function(e) {
+			
+			resizeScreenCorrectly();
+            inboxHistory();
+			
+			
+			$(window).on('resize', function(){
+				resizeScreenCorrectly();
+			});
+			
+			$('#loadingContainer').fadeOut();
+
+			$('#userIdInput').val(user.id);
+			
+            $('#userName').html(user.name);
+
+            $('.toggleChatType').click(function () {
+                $('.toggleChatType').removeClass('toggleSelected');
+
+                $(this).addClass('toggleSelected');
+
+                var thisIdToShow = $(this).attr('data-id');
+
+
+
+                $('.toggleChatTypeContainer').hide();
+
+                $('#' + thisIdToShow).show();
+
+            });
+			
+			var mouseXPositionDown = 0;
+			var mouseXPositionUp = 0;
+			
+			$(document).on("mousedown",".tasks",  function(){
+				mouseXPositionDown = event.clientX; 
+				
+				//console.log(mouseXPositionDown);
+				//alert('mouse down');
+				//alert("The paragraph was clicked.");
+			});
+
+			$(document).on("mouseup",".tasks",  function(e){
+				
+				mouseXPositionUp = event.clientX;  
+				
+				var movedPixels = (mouseXPositionDown - mouseXPositionUp);
+				
+				
+				if(movedPixels < 50 && movedPixels > -50)
+				{
+					if($(e.target).hasClass("markChatDone"))
+					{
+					   	//alert('mark chat done');
+					}
+					else if($(e.target).hasClass("markChatUndone"))
+					{
+
+					}
+					else
+					{
+						window.location = $(this).attr('data-id');
+					}
+					//
+					//alert(e.target.nodeName);
+				}
+				else if(movedPixels > 100)
+				{
+					$('.tasks').find('.btnOverlay').css("right","-40%");
+					
+					console.log('start animation');
+					
+					$(this).find('.btnOverlay').animate({"right":"0px"}, "fast");
+					//$('.bubbleContainer:before').animate({"right":"0px"}, "slow");
+				}
+				
+				console.log(mouseXPositionUp);
+				console.log(movedPixels);
+				
+				//alert(movedPixels);
+				//mouseYPosition = event
+				
+				
+				//alert('mouse down');
+				//alert("The paragraph was clicked.");
+			});
+			
+			$(document).on("click",".markChatDone",  function(){
+				var chatId = $(this).attr('data-id');
+				
+				$.ajax({
+					type: "POST",
+					url: 'http://buddy.na/api/markchatdone',
+					data: {user_id: user.id, chat_id: chatId}, // serializes the form's elements.
+					success: function (data) {
+						window.location = 'inbox.html';
+					},
+					error: function(data){
+						//$('#loading').fadeOut();
+						//alert('No Internet');
+						//setTimeout(inboxHistory, 1000);
+					}
+				});	
+				
+			});
+			
+			$(document).on("click",".markChatUndone",  function(){
+				var chatId = $(this).attr('data-id');
+				
+				$.ajax({
+					type: "POST",
+					url: 'http://buddy.na/api/markchatundone',
+					data: {user_id: user.id, chat_id: chatId}, // serializes the form's elements.
+					success: function (data) {
+						window.location = 'inbox.html';
+					},
+					error: function(data){
+						//$('#loading').fadeOut();
+						//alert('No Internet');
+						//setTimeout(inboxHistory, 1000);
+					}
+				});	
+				
+			});
+			
+		});
+		
+		function insertInboxEntry(lastMessage, firstMessage, notificationCount, dateTime, chatId, type = 'inbox', dateDay, dateMonth)
+		{
+			var notificationDiv = '';
+			
+			if(notificationCount > 0)
+			{
+				notificationDiv = '<div id="messageNotication'+chatId+'" class="notificationCounter">'+notificationCount+'</div>';
+            }
+            else
+            {
+                notificationDiv = '<div id="messageNotication' + chatId + '" class="notificationCounter" style="display:none">' + notificationCount + '</div>';
+            }
+			
+			
+			if(type == 'inbox')
+			{
+				var overlayBtnSwipe = '<div data-id="'+chatId+'" class="btnOverlay markChatDone">Mark As Done</div>';
+			}
+			else if (type == 'history')
+			{
+				var overlayBtnSwipe = '<div data-id="'+chatId+'" class="btnOverlay markChatUndone">Reopen Task</div>';
+			}
+				
+			
+            var includeInboxChat = '<div class="bubbleContainer" data-id="chat-message.html#'+chatId+'"><div>'+
+									overlayBtnSwipe+
+									'<div style="display: table-cell; vertical-align: middle" class="col-xs-2 col-sm-2 col-md-2">'+
+										'<img src="http://res.cloudinary.com/buddy-industries-cc/image/upload/v1521554630/buddy_wink.svg">'+
+										notificationDiv+
+									'</div>'+
+									'<div style="display: table-cell; vertical-align: middle" class="col-xs-10 col-sm-10 col-md-10">'+
+                                        '<h4>Buddy</h4>'+
+                                        '<p>'+lastMessage +'</p>'+
+									'</div>'+
+									'<div style=" text-align: right; color: #929292; margin-bottom: 10px" class="col-xs-12 col-sm-12 col-md-12">'+
+										'<small>'+dateTime+'</small>'+
+									'</div>'+
+								'</div></div>';
+			
+			var includeInboxTask = '<div class="tasks" data-id="chat-message.html#'+chatId+'">'+   		
+										overlayBtnSwipe+
+										'<div class="dateLabel">'+
+											'<h4>'+dateDay+'</h4>'+
+											'<h5>'+dateMonth+'</h5>'+   			
+										'</div>'+
+										'<div class="taskContainerText">'+
+											firstMessage+
+										'</div>'+
+									'</div>';
+			
+			if(type == 'inbox')
+			{
+				$('#chatContainerTasks').append(includeInboxTask);		
+			}
+			else
+			{
+				$('#chatContainerHistory').append(includeInboxTask);		
+			}
+			
+			$('#chatContainerInbox').append(includeInboxChat);
+            
+		}
+		
+		function inboxHistory()
+		{
+			$.ajax({
+				type: "POST",
+				url: 'http://buddy.na/api/updateinbox',
+				data: {user_id: user.id}, // serializes the form's elements.
+				success: function (data) {
+
+
+					if(data.update == true)
+					{
+						$('#chatContainer').html('');
+
+						for (var key in data.inbox)
+						{
+
+							insertInboxEntry(data.inbox[key].latestMessage,data.inbox[key].firstMessage, data.inbox[key].unread, data.inbox[key].latestDate, data.inbox[key].id, data.inbox[key].type, data.inbox[key].latestDateDay, data.inbox[key].latestDateMonth);
+
+						}
+					}
+
+					//setTimeout(updateInbox, 1000);
+					//$("#messageContainer").scrollTop($("#messageContainer")[0].scrollHeight);
+					//var mydiv = $("#messageContainer");
+
+					//$('#inboxToken').val(data.unique_token);
+					//alert(data.unique_token);
+					//window.location = 'chat-message.html#'+data.inbox.id;
+				},
+				error: function(data){
+					//$('#loading').fadeOut();
+					//alert('No Internet');
+					setTimeout(inboxHistory, 1000);
+				}
+            });	
+
+
+
+
+		}
+		
+    </script>
+	
+</head>
+
+<body>
+	
+	<section id="header">
+		<div class="col-xs-2 col-sm-2 col-md-2">
+            <a href="start-new-chat.html"><img style="height: 20px; margin: 13px 0 0 2px" src="img/goback.svg" /></a>
+        </div>
+		
+		<div class="col-xs-8 col-sm-8 col-md-8">
+			<h4 style="margin-top: 16px; text-align: center">ASK BUDDY</h4>
+		</div>
+		
+		<div class="col-xs-2 col-sm-2 col-md-2">
+			<img style="height: 20px; margin: 13px; float: right" src="img/menustack.svg" />
+		</div>
+	</section>
+
+
+	<section style="margin:60px 20px 0 20px;border-radius:10px; border:2px solid #FBCD0D;">
+
+        <div class="row">
+
+            <div id="topQuickbar" class="col-xs-12 col-sm-12 col-md-12">
+
+                <div data-id="chatContainerInbox" class="toggleSelected toggleChatType col-xs-3 col-sm-3 col-md-3" style="text-align:center; padding:10px 0;">
+                    <span>INBOX</span>
+                </div>
+                <div data-id="chatContainerTasks" class="toggleChatType col-xs-3 col-sm-3 col-md-3" style="text-align:center; padding:10px 0;">
+                    <span>TASKS</span>
+                </div>
+                <div data-id="chatContainerHistory" class="toggleChatType col-xs-3 col-sm-3 col-md-3" style="text-align:center; padding:10px 0;">
+                    <span>HISTORY</span>
+                </div>
+                <div data-id="chatContainerVouchers" class="toggleChatType col-xs-3 col-sm-3 col-md-3" style="text-align:center; padding:10px 0;">
+                    <span style="border:none">VOUCHERS</span>
+                </div>
+
+
+            </div>
+        </div>
+    </section>
+
+
+	<section style="display:block" id="chatContainerInbox" class="row toggleChatTypeContainer"></section>
+    <section id="chatContainerTasks" class="row toggleChatTypeContainer">
+    	
+    	
+    </section>
+    <section id="chatContainerHistory" class="row toggleChatTypeContainer"></section>
+    <section id="chatContainerVouchers" class="row toggleChatTypeContainer"></section>
+
+
+	<!--
+	<section id="startChatContainer">
+        <a href="tel:999"><img style="height:100px" src="img/icons/startChat.svg" /></a>
+    </section>
+    -->
+    
+    <section id="bottomBar">
+        <div class="col-xs-1 col-sm-1 col-md-1"></div>
+        <div class="col-xs-2 col-sm-2 col-md-2">
+            <img id="openQR" src="img/icons/qrcode.svg" />
+        </div>
+        <div class="col-xs-2 col-sm-2 col-md-2">
+            <a href="inbox.html"><img src="img/icons/inbox.svg" /></a>
+        </div>
+        <div class="col-xs-2 col-sm-2 col-md-2">
+            <div style="background:#FBCD0D; margin:0 10px; height:50px">
+                <img style="height: 40px; margin-top: 5px" src="images/buddy_icon_bottom.svg" />
+            </div>
+        </div>
+        <div class="col-xs-2 col-sm-2 col-md-2">
+            <a href="pages.html"><i style="font-size:30px; line-height:50px; color:#666" class="fa fa-plus" aria-hidden="true"></i></a>
+        </div>
+        <div class="col-xs-2 col-sm-2 col-md-2">
+            <a href="sos.html"><img style="height: 13px; margin-top: 17px" src="img/icons/sos.svg" /></a>
+        </div>
+
+        <div class="col-xs-1 col-sm-1 col-md-1"></div>
+
+    </section>
+	
+	
+	<div id="loadingContainer">
+		<div id="loader"></div>
+	</div>
+	
+    <div id="qrCodeFrame">
+        <div id="closeFrame">x</div>
+        <iframe></iframe>
+    </div>
+	
+    <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" src="scripts/platformOverrides.js"></script>
+    <script type="text/javascript" src="scripts/index.js"></script>
+</body>
+</html>

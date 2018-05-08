@@ -1,0 +1,798 @@
+﻿<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <!--<meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *">-->
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+    
+
+	<title>Mobile App</title>
+
+
+   
+
+	
+	
+</head>
+
+<body>
+
+    <div id="loadingContainer">
+        <div id="loader"></div>
+    </div>
+    <script type="text/javascript" src="jsonanimated/splashscreen/lottie.js"></script>
+    <script type="text/javascript" src="js/loading.js"></script>
+	
+	<section id="header">
+		<div class="col-xs-2 col-sm-2 col-md-2">
+            <div class="goBackMain"><img style="height: 20px; margin: 13px 0 0 2px" src="img/goback.svg" /></div>
+        </div>
+		
+		<div class="col-xs-8 col-sm-8 col-md-8">
+			<h4 id="businessName" style="margin-top: 16px; text-align: center">ASK BUDDY</h4>
+		</div>
+		
+		<div class="col-xs-2 col-sm-2 col-md-2">
+			<img style="height: 20px; margin: 13px; float: right" src="img/menustack.svg" />
+		</div>
+	</section>
+	
+    <section id="coverImage" style="margin-top:50px">
+        <img style="width:100%" />
+    </section>
+    
+    
+    
+	<style>
+		.draggable {
+		  max-width: 500px;
+		  overflow: hidden;
+		  border: 1px solid red;
+		  padding: 10px;
+		}
+
+		nav {
+		  display: flex;
+		  flex-direction: row;
+		}
+
+		nav a {
+		  margin-right: 20px;
+		 	padding: 2px;
+			display: block
+		}
+	</style>
+	<div>
+		<div class="draggable">
+		  <nav>
+			<a href="">menu1</a>
+			<a href="">menu2</a>
+			<a href="">menu3</a>
+			<a href="">menu4</a>
+			<a href="">menu5</a>
+			<a href="">menu6</a>
+			<a href="">menu7</a>
+			<a href="">menu8</a>
+			<a href="">menu9</a>
+			<a href="">menu10</a>
+			<a href="">menu11</a>
+		  </nav>
+		</div>
+	</div>
+	
+	<section id="chatContainer" class="row" style="margin-top:0">
+        
+        
+	</section>
+	
+    <section id="bottomBar">
+        <div class="col-xs-1 col-sm-1 col-md-1"></div>
+        <div class="col-xs-2 col-sm-2 col-md-2">
+            <img id="openQR" src="img/icons/qrcode.svg" />
+        </div>
+        <div class="col-xs-2 col-sm-2 col-md-2">
+            <a href="inbox.html"><img src="img/icons/inbox.svg" /></a>
+        </div>
+        <div class="col-xs-2 col-sm-2 col-md-2" id="logoIcon">
+            <a href="start-new-chat.html"> <img style="height: 50px; margin-top: 0" src="img/icons/buddy.svg" /></a>
+        </div>
+        <div class="col-xs-2 col-sm-2 col-md-2">
+            <a id="telephoneCall" href=""><i style="font-size:30px; line-height:50px; color:#666" class="fa fa-volume-control-phone" aria-hidden="true"></i></a>
+        </div>
+
+        <div class="col-xs-2 col-sm-2 col-md-2">
+            <a href="sos.html"><img style="height: 13px; margin-top: 17px" src="img/icons/sos.svg" /></a>
+        </div>
+
+        <div class="col-xs-1 col-sm-1 col-md-1"></div>
+
+    </section>
+	
+	
+	
+    <div id="qrCodeFrame">
+        <div id="closeFrame">x</div>
+        <iframe></iframe>
+    </div>
+
+
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/loading.css" rel="stylesheet">
+    <script src="js/jquery-3.2.1.min.js"></script>
+
+    <script type="text/javascript" src="jsonanimated/splashscreen/lottie.js"></script>
+    <link href="css/shared.css" rel="stylesheet">
+    <script type="text/javascript" src="js/shared.js"></script>
+
+    <script type="text/javascript" src="js/simpleStorage.js"></script>
+    <script type="text/javascript" src="js/storageScript.js"></script>
+    <script type="text/javascript" src="js/validateSignIn.js"></script>
+
+
+
+    <script src="js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+
+
+    <script>
+
+    </script>
+
+    <style>
+        video::-internal-media-controls-download-button {
+            display: none;
+        }
+
+        video::-webkit-media-controls-enclosure {
+            overflow: hidden;
+        }
+
+        video::-webkit-media-controls-panel {
+            width: calc(100% + 30px); /* Adjust as needed */
+        }
+
+        html, body {
+            height: 100%;
+            overflow: hidden
+        }
+
+        body {
+            background: #FBCD0D;
+            overflow: hidden
+        }
+
+
+        #logo {
+            text-align: center;
+            width: 100%;
+            margin: 20px 0
+        }
+
+            #logo img {
+                max-width: 80%
+            }
+
+        #header {
+            width: 100%;
+            height: 50px;
+            background: #FBCD0D;
+            border-bottom: 1px solid #7C7C7C;
+            position: fixed;
+            left: 0;
+            top: 0;
+            z-index: 100
+        }
+
+        #imageHeaderContainer {
+            width: 100%;
+            height: 300px;
+            background: #000000;
+            text-align: right;
+            overflow: hidden
+        }
+
+            #imageHeaderContainer img {
+                height: 200px;
+                margin-top: 80px;
+                margin-right: -20px
+            }
+
+
+        #greeting {
+            text-align: center;
+            font-weight: bold;
+            font-size: 20px;
+            margin: 20px 0
+        }
+
+        #subGreeting {
+            text-align: center
+        }
+
+        #startChat {
+            margin-top: 40px;
+            background: #FFF;
+            border: #C3C3C3 1px solid;
+            padding: 10px;
+            width: 90%;
+            margin-left: 5%
+        }
+
+            #startChat i {
+            }
+
+            #startChat input {
+                width: 100%;
+                border: none;
+                background: none
+            }
+
+        .bubbleContainer {
+            background: #FFF;
+            border-radius: 10px;
+            width: 90%;
+            margin-left: 5%;
+            min-height: 60px;
+            display: table;
+            padding-top: 10px;
+            margin-top: 5px
+        }
+
+            .bubbleContainer img {
+                border-radius: 100px;
+                height: 40px;
+            }
+
+        #chatContainer {
+            position: relative;
+            margin: 0;
+            margin-top: 60px;
+            overflow: hidden;
+            overflow-y: scroll;
+            width: 100%
+        }
+
+
+        .notificationCounter {
+            position: absolute;
+            top: 0px;
+            right: -10px;
+            background: #D1181B;
+            width: 20px;
+            height: 20px;
+            text-align: center;
+            line-height: 20px;
+            color: #FFF;
+            border-radius: 50px;
+            font-size: 10px
+        }
+
+        #startChatContainer {
+            height: 120px;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        #submitNewChat a {
+            display: block;
+            width: 100%;
+            text-align: center
+        }
+
+        #startChatContainer img {
+            cursor: pointer
+        }
+
+        body {
+            background: #FFF
+        }
+
+        .mainPages {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            position: absolute;
+            width: 100%
+        }
+
+            .mainPages li {
+                width: 100%;
+                padding: 36px 0;
+                background: #FBCD0D;
+                margin-top: 5px;
+                cursor: pointer;
+                text-transform: uppercase;
+                font-family: 'Roboto', sans-serif;
+                font-size: 16px;
+                position: relative
+            }
+
+                .mainPages li:hover {
+                    background: #ffd41f
+                }
+
+                .mainPages li:after {
+                    content: '>';
+                    position: absolute;
+                    right: 30px;
+                    font-family: monospace;
+                    font-size: 26px;
+                    font-weight: normal;
+                    top: 25px;
+                }
+
+        .subPages {
+            width: 100%;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            position: absolute;
+            display: none
+        }
+
+            .subPages li {
+                width: 100%;
+                padding: 36px 0;
+                background: #FBCD0D;
+                margin-top: 5px;
+                cursor: pointer
+            }
+
+                .subPages li:hover {
+                    background: #ffd41f
+                }
+
+            .subPages .goForwardIn:after {
+                content: '>';
+                position: absolute;
+                right: 30px;
+            }
+
+
+            .subPages .goBackMain:after {
+                content: '<';
+                position: absolute;
+                left: 30px;
+            }
+
+        .pageInfo {
+            left: 10000px;
+            position: fixed;
+            overflow: scroll;
+            width: 100%;
+            display: none;
+            top: 50px;
+            background: #FFF;
+        }
+
+            .pageInfo .pageContainer {
+                margin: 10px
+            }
+
+
+        .mapOverlay {
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            top: 0
+        }
+
+        video {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        table td, table tr {
+            padding: 5px;
+            border: 2px solid #FFF;
+            background: #f1f1f1;
+        }
+
+        table {
+        }
+
+        .pageContainer img {
+            width: 100%
+        }
+    </style>
+
+
+
+    <script type="text/javascript">
+
+
+        var oldStep1 = 0;
+        var oldStep2 = 0;
+        var oldStep3 = 0;
+        var oldStep4 = 0;
+        var oldStep5 = 0;
+        var oldStep6 = 0;
+        var oldStep7 = 0;
+        var oldStep8 = 0;
+        var stepToFadeIn = 0;
+
+        function shiftStepsForward()
+        {
+            oldStep8 = oldStep7;
+            oldStep7 = oldStep6;
+            oldStep6 = oldStep5;
+            oldStep5 = oldStep4;
+            oldStep4 = oldStep3;
+            oldStep3 = oldStep2;
+            oldStep2 = oldStep1;
+            oldStep1 = stepToFadeIn;
+
+            //alert(oldStep1);
+        }
+
+        function shiftStepsBack() {
+
+            if (oldStep1 > 0)
+            {
+
+                oldStep1 = oldStep2;
+                oldStep2 = oldStep3;
+                oldStep3 = oldStep4;
+                oldStep4 = oldStep5;
+                oldStep5 = oldStep6;
+                oldStep6 = oldStep7;
+                oldStep7 = oldStep8;
+            }
+
+
+            //alert(oldStep1);
+        }
+
+
+
+        $(document).ready(function (e) {
+            resizeScreenCorrectly();
+
+            getPagesAjax();
+
+            //$('#loadingContainer').fadeOut();
+
+            $(window).on('resize', function () {
+                resizeScreenCorrectly();
+            });
+
+            //alert('hi');
+
+
+            //$('.moveLevel').click(function () {
+            $(document).on("click", ".moveLevel", function () {
+                //alert('hi');
+                stepToFadeIn = $(this).attr('data-id');
+                shiftStepsForward();
+                //alert(stepToFadeIn);
+
+                moveLevel(stepToFadeIn);
+            });
+
+            $('.goBackMain').click(function () {
+                goBack();
+            });
+
+
+        });
+
+        var step = 1;
+        var theLevel = 1;
+
+
+        function getPagesAjax()
+        {
+            var placeId = location.hash.substr(1);
+
+            $.ajax({
+                type: "GET",
+                url: 'http://buddy.na/api/getbuddypages/' + placeId,
+                //data: $('#startChatForm').serialize(), // serializes the form's elements.
+                success: function (data) {
+                    //window.location = 'chat-message.html#' + data.inbox.id;
+                    addPages(data.pages);
+
+                    $('#loadingContainer').fadeOut();
+
+                    $('#logoIcon').css('background', '#' + data.place.app_background);
+
+                    //alert(data.place.text_colour);
+                    $('.mainPages li').css('color', '#' + data.place.text_colour);
+                    $('.subPages li').css('color', '#' + data.place.text_colour);
+
+
+                    $('.mainPages li').css('background', '#' + data.place.app_background);
+                    //$('#header').css('background', '#' + data.place.app_background);
+                    $('#header').css('background', '#FFF');
+
+                    $('.subPages li ').css('background', '#' + data.place.app_background);
+                    $('#coverImage img').attr('src', 'http://res.cloudinary.com/buddy-industries-cc/image/upload/c_limit,h_500,w_500/v1517483042/' + data.place.image_name + '.jpg');
+
+                    //alert('loaded1');
+                    $('#coverImage img').on('load',function () {
+                        //alert('loaded');
+                        resizeScreenCorrectly();
+                    });
+
+                    $('#telephoneCall').attr('href', 'tel:' + data.place.telephone);
+
+                    $('#businessName').css('margin-top', '0');
+                    $('#businessName').html('<img style="height:49px" src="http://res.cloudinary.com/buddy-industries-cc/image/upload/c_limit,h_200/v1517483042/' + data.place.image_name_thumb +'.jpg" />');
+
+                    $('#businessName').css('margin-top', '0');
+
+                    $('#logoIcon img').attr('src', 'http://res.cloudinary.com/buddy-industries-cc/image/upload/c_scale,h_50,w_50/v1517483042/' + data.place.image_name_icon+'.png');
+
+                    resizeScreenCorrectly();
+                },
+                error: function (data) {
+                    //$('#loading').fadeOut();
+                    alert('Some kind of error happened');
+                }
+            });
+        }
+
+        function moveLevel(levelToMove)
+        {
+            //alert('hi');
+            //theLevel = $(this).attr('data-id');
+
+            //alert(theLevel);
+
+            var screenWidth = $(window).width();
+
+            //$('.steps' + step).animate({ "left": -screenWidth }, "fast");
+            //alert(oldStep2);
+            $('.steps' + oldStep2).fadeOut();
+            $('.steps' + oldStep2).animate({ "left": -screenWidth }, "fast");
+            //$('.subPages, .mainPages').fadeOut();
+
+
+            $('.steps' + levelToMove).show().css({ left: screenWidth }).animate({ "left": 0 }, "fast");
+
+            //$('.steps' + levelToMove).fadeIn();
+
+            step = levelToMove;
+
+            //alert('nice');
+            //setTimeout(resizeScreenCorrectly, 3000);
+            setTimeout(changeVideoWidth, 500);
+            //changeVideoWidth();
+
+
+        }
+
+        function changeVideoWidth()
+        {
+            //alert('what');
+            $('video').width('90%');
+            $('video').width('100%');
+
+        }
+
+        /*
+        function shiftPageIn() {
+            //alert('hi');
+            var screenWidth = $(window).width();
+
+            $('.mainPages').animate({ "left": -screenWidth }, "fast");
+            $('.subPages').animate({ "left": -screenWidth }, "fast");
+            $('.pageInfo').css({ left: screenWidth }).show().animate({ "left": 0 }, "fast");
+
+            step = 3;
+        }
+        */
+
+        function goBack() {
+            //alert('hi');
+            var screenWidth = $(window).width();
+
+            if (oldStep1 > 0)
+            {
+                $('.steps' + oldStep1).fadeOut().animate({ "left": screenWidth }, "fast");
+                //step--;
+                $('.steps' + oldStep2).css({ left: -screenWidth }).show().animate({ "left": 0 }, "fast");
+
+            }
+
+
+            shiftStepsBack();
+
+            $("video").each(function () {
+                $(this).get(0).pause();
+            });
+
+
+        }
+
+
+        function resizeScreenCorrectly() {
+            $('#chatContainer').css('height', $(window).height() - 100 - $('#coverImage').height());
+
+
+
+            $('.pageInfo').each(function () {
+
+                if ($(this).hasClass('mapOverlay')) {
+                    $(this).css('height', $(window).height() - 100);
+                }
+                else {
+                    $(this).css('height', $(window).height() - 100);
+                    //$(this).css('height', $(window).height() - 250);
+                }
+            });
+
+        }
+
+
+        var theStep = 0;
+
+
+
+
+        function addPageDetail(jsonArray)
+        {
+            var windowWidth = $(window).width();
+
+            if (jsonArray['page_type_id'] == 1)
+            {
+                var innerHtml = '<div class="pageInfo steps' + jsonArray['id'] + '"><div class="pageContainer">' + jsonArray['detail'] + '</div></div>';
+            }
+            else if (jsonArray['page_type_id'] == 2)
+            {
+                var galleryImageHtml = '';
+
+                for (var key in jsonArray.gallery) {
+                    galleryImageHtml += '<a data-fancybox="detailGallery' + jsonArray['id'] + '" href="http://res.cloudinary.com/buddy-industries-cc/image/upload/c_limit,h_1000,w_1000/' + jsonArray.gallery[key].image_name + '.jpg"><div style="padding:5px" class="col-xs-4 col-sm-4 col-md-4"><img style="width:100%; margin-bottom:10px" src="http://res.cloudinary.com/buddy-industries-cc/image/upload/c_fill,h_300,w_300/' + jsonArray.gallery[key].image_name + '.jpg" /></div></a>';
+
+                }
+
+
+
+                var innerHtml = '<div class="pageInfo steps' + jsonArray['id'] + '"><div class="pageContainer">' + galleryImageHtml + '</div></div>';
+            }
+            else if (jsonArray['page_type_id'] == 3) {
+                var innerHtml = '<div class="mapOverlay pageInfo steps' + jsonArray['id'] + '"><iframe style="width:100%; height:100%" frameborder="0" src="https://maps.google.com/maps?q=' + jsonArray['latitude'] + ',' + jsonArray['lontigude'] +'&hl=es;z=14&amp;output=embed"></iframe></div></div>';
+            }
+            else if (jsonArray['page_type_id'] == 4) {
+                var galleryImageHtml = '';
+
+
+                var pagesDone = false;
+                var x = 1;
+                while (pagesDone == false) {
+
+                    if (urlExists('http://res.cloudinary.com/buddy-industries-cc/image/upload/c_limit,h_1000,w_1000/pg_' + x + '/' + jsonArray.pdf_name + '.jpg') == 200) {
+                        galleryImageHtml += '<a data-fancybox="detailGallery' + jsonArray['id'] + '" href="http://res.cloudinary.com/buddy-industries-cc/image/upload/c_limit,h_1000,w_1000/pg_' + x + '/' + jsonArray.pdf_name + '.jpg"><div style="padding:5px" class="col-xs-12 col-sm-12 col-md-12"><img style="width:100%; margin-bottom:10px" src="http://res.cloudinary.com/buddy-industries-cc/image/upload/c_limit,h_600,w_600/pg_' + x + '/' + jsonArray.pdf_name + '.jpg" /></div></a>';
+                        x++;
+                    }
+                    else {
+                        pagesDone = true;
+                    }
+
+                }
+
+
+
+                var innerHtml = '<div class="pageInfo steps' + jsonArray['id'] + '"><div class="pageContainer">' + galleryImageHtml + '</div></div>';
+            }
+            else if (jsonArray['page_type_id'] == 5) {
+                var innerHtml = '<div class="pageInfo steps' + jsonArray['id'] + '">'+
+                    '<video style="width:100%" controls poster="http://res.cloudinary.com/buddy-industries-cc/video/upload/c_limit,w_' + windowWidth + '/e_loop/' + jsonArray['video_name'] + '.gif">' +
+                    '<source src="http://res.cloudinary.com/buddy-industries-cc/video/upload/c_limit,w_' + windowWidth+'/' + jsonArray['video_name'] + '.mp4" type="video/mp4" />' +
+                    '<source src="http://res.cloudinary.com/buddy-industries-cc/video/upload/c_limit,w_' + windowWidth +'/' + jsonArray['video_name'] + '.ogg" type="video/ogg" />' +
+                    '<source src="http://res.cloudinary.com/buddy-industries-cc/video/upload/c_limit,w_' + windowWidth +'/' + jsonArray['video_name'] + '.webm" type="video/webm" />' +
+                    '</video>' +
+                    '</div>';
+
+
+            }
+
+            $("[data-fancybox]").fancybox({
+                selector: '[data-fancybox="images"]',
+                loop: true
+            });
+
+            $('#chatContainer').append(innerHtml);
+
+        }
+
+        function urlExists(testUrl) {
+            var http = jQuery.ajax({
+                type: "HEAD",
+                url: testUrl,
+                async: false
+            })
+            return http.status;
+            // this will return 200 on success, and 0 or negative value on error
+        }
+
+        function addPages(jsonArray, is_sub = false, parentId = 0, level = 1)
+        {
+            //alert(parentId);
+            var htmlToInclude = '';
+
+            if (is_sub === true)
+            {
+                //alert('is sub');
+                htmlToInclude = '<ul class="subPages level' + level +' steps' + parentId+'">';
+            }
+            else
+            {
+                htmlToInclude = '<ul class="mainPages level'+level+' steps' + parentId +'">';
+            }
+
+            for (var key in jsonArray)
+            {
+                htmlToInclude += '<li class="moveLevel" data-id="' + jsonArray[key].id + '" >' + jsonArray[key].name + '</li>';
+
+                if (typeof jsonArray[key].children != "undefined")
+                {
+                    //alert('hi');
+                    addPages(jsonArray[key].children, true, jsonArray[key].id, level++);
+                }
+                else
+                {
+                    //alert('addPage');
+                    addPageDetail(jsonArray[key], level++);
+                }
+
+                //jsonArray[key].name
+            }
+
+
+
+            htmlToInclude += '</ul>';
+
+
+            $('#chatContainer').append(htmlToInclude);
+        }
+
+    </script>
+	
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-mousewheel/3.1.13/jquery.mousewheel.js"></script>
+	
+	
+	<script>
+		var nav = $('nav');
+
+		nav.draggable({
+		  axis: "x",
+		  containment: 'draggable',
+		  distance: 10
+		});
+
+		navWidth = 0;
+		$('nav a').each(function(index) {
+			navWidth += parseInt($(this).width(), 10);
+		});
+
+		nav.on( "drag", function( event, ui ) {
+
+		  if (ui.offset.left > 10) {
+			ui.position.left = 10;
+		  }
+
+		  if (ui.position.left < navWidth - nav[0].scrollWidth) {
+			ui.position.left = navWidth - nav[0].scrollWidth + 5;
+		  }
+		});
+	</script>
+   
+    <link rel="stylesheet" type="text/css" href="fancybox/dist/jquery.fancybox.min.css">
+    <script src="fancybox/dist/jquery.fancybox.min.js"></script>
+    <script>
+    </script>
+</body>
+</html>

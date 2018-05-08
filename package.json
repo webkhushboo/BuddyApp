@@ -1,0 +1,38 @@
+{
+    "name": "app.buddy.na",
+    "displayName": "Buddy",
+    "version": "1.0.0",
+    "description": "A sample Apache Cordova application that responds to the deviceready event.",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "Apache Cordova Team",
+    "license": "Apache-2.0",
+    "cordova": {
+        "plugins": {
+            "cordova-plugin-whitelist": {},
+            "pushbots-cordova-plugin": {},
+            "cordova-sqlite-storage": {},
+            "phonegap-plugin-barcodescanner": {
+                "ANDROID_SUPPORT_V4_VERSION": "27.+"
+            },
+            "com.outsystems.mobile.stetho": {},
+            "cordova-plugin-file": {},
+            "cordova-plugin-file-transfer": {}
+        },
+        "platforms": [
+            "android"
+        ]
+    },
+    "dependencies": {
+        "cordova-android": "^7.0.0",
+        "cordova-plugin-file": "^6.0.1",
+        "cordova-plugin-file-transfer": "^1.7.1",
+        "cordova-plugin-stetho-android": "0.0.1",
+        "cordova-plugin-whitelist": "^1.3.3",
+        "cordova-sqlite-storage": "^2.3.1",
+        "phonegap-plugin-barcodescanner": "^7.1.2",
+        "pushbots-cordova-plugin": "^1.5.13"
+    }
+}

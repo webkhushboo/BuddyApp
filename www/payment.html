@@ -1,0 +1,467 @@
+﻿<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <!--<meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *">-->
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+    
+    <title>Mobile App</title>
+
+    <script>
+        var pictureTaken = false;
+    </script>
+
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/loading.css" rel="stylesheet">
+
+    <script type="text/javascript" src="jsonanimated/splashscreen/lottie.js"></script>
+    <link href="css/shared.css" rel="stylesheet">
+    <script type="text/javascript" src="js/shared.js"></script>
+
+    <script src="js/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="js/simpleStorage.js"></script>
+    <script type="text/javascript" src="js/storageScript.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+
+    <style>
+        html, body {
+            height: 100%
+        }
+
+        body {
+            background: #FFF
+        }
+
+        #logo {
+            text-align: center;
+            width: 100%;
+            padding: 50px 0;
+            background: #FBCD0D
+        }
+
+        #logo img {
+            max-width: 30%
+        }
+
+        #step1, #step2, #step3, #step4{ padding:20px}
+
+        .yellowBorderInput input {
+            width: 100%;
+            height: 40px;
+            text-align: center;
+            border: 2px solid #FBCD0D;
+            background: none;
+            margin-bottom: 10px
+        }
+
+        .yellowBorderInput select {
+            width: 100%;
+            height: 40px;
+            text-align: center;
+            border: 2px solid #FBCD0D;
+            background: none;
+            margin-bottom: 10px;
+            text-align-last: center;
+        }
+
+        .yellowButton {
+            width: 100%;
+            height: 40px;
+            margin-top: 5px;
+            border: none;
+            background: #FBCD0D;
+            color: #FFF;
+            line-height: 40px;
+            text-align: center;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+
+        .steps{display:none}
+        #step1{display:block}
+
+    </style>
+
+    <style>
+        .stepwizard-step p {
+            margin-top: 10px;
+        }
+
+        .stepwizard-row {
+            display: table-row;
+        }
+
+        .stepwizard {
+            display: table;
+            width: 100%;
+            position: relative;
+            margin-top:30px
+        }
+
+        .btn-circle[disabled] {
+            opacity: 1 !important;
+            filter: alpha(opacity=100) !important;
+            background: #FFF;
+            border: 1px solid #CCC;
+            color: #999;
+        }
+        .btn-circle {
+            border-radius: 50px;
+            background: #FBCD0D;
+             border:none;
+             font-weight:bold;
+             color:#333
+        }
+        
+        .stepwizard-row:before {
+            top: 14px;
+            bottom: 0;
+            position: absolute;
+            content: " ";
+            width: 100%;
+            height: 1px;
+            background-color: #ccc;
+            z-order: 0;
+        }
+
+        .stepwizard-step {
+            display: table-cell;
+            text-align: center;
+            position: relative;
+        }
+
+        .numpad {
+            margin:0px
+        }
+        
+        .numpad div {
+            text-align: center;
+            margin-bottom:5px
+        }
+
+            .numpad div span {
+                background: #FBCD0D;
+                padding: 10px 0;
+                width: 100%;
+                display: block;
+                cursor: pointer;
+                color:#000
+            }
+    </style>
+
+    <script type="text/javascript">
+
+	    
+
+    </script>
+
+</head>
+
+<body>
+    <div id="loadingContainer">
+        <div id="loader"></div>
+    </div>
+    <script type="text/javascript" src="jsonanimated/splashscreen/lottie.js"></script>
+    <script type="text/javascript" src="js/loading.js"></script>
+
+    <section id="header">
+        <div class="col-xs-2 col-sm-2 col-md-2">
+            <img style="height: 20px; margin: 13px 0 0 2px" src="img/goback.svg" />
+        </div>
+
+        <div class="col-xs-8 col-sm-8 col-md-8">
+            <h4 style="margin-top: 16px; text-align: center">PAY BUDDY</h4>
+        </div>
+
+        <div class="col-xs-2 col-sm-2 col-md-2">
+            <a data-toggle="collapse" href="#infoMenu"><img style="height: 20px; margin: 13px; float: right" src="img/menustack.svg" /></a>
+        </div>
+    </section>
+
+    <div id="infoMenu" class="collapse">
+        <ul>
+            <li><a href="update.html">Update Profile</a></li>
+            <li><a href="list_of_cards.html">Edit payment methods</a></li>
+            <li><a href="logout.html">Logout</a></li>
+        </ul>
+    </div>
+
+    <div class="col-md-12" style="padding:0; margin-top:50px">
+
+        <div id="logo">
+            <img src="img/buddyFace.svg" />
+
+            <div class="stepwizard">
+                <div class="stepwizard-row setup-panel">
+                    <div class="stepwizard-step">
+                        <a id="step-1" href="#step-1" type="button" class="btn btn-primary btn-circle stepWizzard">1</a>
+                    </div>
+                    <div class="stepwizard-step">
+                        <a id="step-2" href="#step-2" type="button" class="btn btn-default btn-circle stepWizzard" disabled="disabled">2</a>
+                    </div>                    
+                </div>
+            </div>
+
+            <h4>Pay Buddy</h4>
+
+        </div>
+
+        <form name="payform" id="payform" method="post">
+
+
+
+            <div class="steps" id="step1">
+                <div class="yellowBorderInput">
+
+
+                    <h4 style="text-align:center">Pay</h4>
+                    <h4 style="text-align:center">Wilko Aschenbron CC</h4>
+
+                    <input placeholder="N$0.00" id="amount" type="number" name="amount" required="required">
+
+                    <h5 style="text-align:center">Select Card</h5>
+                    <select name="card_id" id="card_id"></select>
+
+                    <input type="hidden" name="user_id" id="user_id" />
+
+                </div>
+
+                <div style="width:100%; padding:20px 0; display:block; margin-top:10px; line-height:0" class="yellowButton proceed" data-id="1"> Proceed </div>
+
+                <a style="width:100%; padding:20px 0; display:block; margin-top:10px; line-height:0; margin-bottom:55px" href="start-new-chat.html" class="yellowButton" data-id="1"> Cancel </a>
+            </div>
+
+            <div class="steps" id="step2">
+                <div class="yellowBorderInput">
+                    <div style="text-align:center">
+                        <h4>Securty Validation</h4>
+                        <h5>Enter you CVC code</h5>
+                    </div>
+                    
+                    <input readonly placeholder="000" id="cvc" type="number" name="cvc" required="required">
+
+                    <div class="numpad">
+                        <div class="row">
+                            <div class="col-xs-4 col-sm-4 col-md-4"><span>1</span></div>
+                            <div class="col-xs-4 col-sm-4 col-md-4"><span>2</span></div>
+                            <div class="col-xs-4 col-sm-4 col-md-4"><span>3</span></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-4 col-sm-4 col-md-4"><span>4</span></div>
+                            <div class="col-xs-4 col-sm-4 col-md-4"><span>5</span></div>
+                            <div class="col-xs-4 col-sm-4 col-md-4"><span>6</span></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-4 col-sm-4 col-md-4"><span>7</span></div>
+                            <div class="col-xs-4 col-sm-4 col-md-4"><span>8</span></div>
+                            <div class="col-xs-4 col-sm-4 col-md-4"><span>9</span></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-4 col-sm-4 col-md-4"></div>
+                            <div class="col-xs-4 col-sm-4 col-md-4"><span>0</span></div>
+                            <div class="col-xs-4 col-sm-4 col-md-4"><span><</span></div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="yellowButton proceed" data-id="1"> Proceed </button>
+
+                    <div style="width:100%; padding:20px 0; display:block; margin-top:10px; line-height:0; margin-bottom:50px" class="yellowButton goback" data-id="1"> Go Back </div>
+
+                </div>
+            </div>
+      </form>
+
+        
+
+        
+
+
+    </div>
+
+    <section id="bottomBar">
+        <div class="col-xs-1 col-sm-1 col-md-1"></div>
+        <div class="col-xs-2 col-sm-2 col-md-2">
+            <img id="openQR" src="img/icons/qrcode.svg" />
+        </div>
+        <div class="col-xs-2 col-sm-2 col-md-2">
+            <a href="inbox.html"><img src="img/icons/inbox.svg" /></a>
+        </div>
+        <div class="col-xs-2 col-sm-2 col-md-2">
+            <img style="height: 50px; margin-top: 0" src="img/icons/buddy.svg" />
+        </div>
+        <div class="col-xs-2 col-sm-2 col-md-2">
+            <a href="pages.html"><img src="img/icons/case.svg" /></a>
+        </div>
+        <div class="col-xs-2 col-sm-2 col-md-2">
+            <a href="sos.html"><img style="height: 13px; margin-top: 17px" src="img/icons/sos.svg" /></a>
+        </div>
+
+        <div class="col-xs-1 col-sm-1 col-md-1"></div>
+
+    </section>
+
+    <script>
+
+        var user = getValueFromSession('user');
+
+        $(document).ready(function () {
+
+            $('.proceed').click(function () {
+                steps('next');
+            });
+
+            $('.goback').click(function () {
+                steps('previous');
+            });
+
+            $('#user_id').val(user.id);
+
+            var hash = location.hash.substr(1);
+
+
+            $('#loadingContainer').fadeOut();
+            $('#name').val(user.name);
+            $('#email').val(user.email);
+            $('#cellphone').val(user.cellphone);
+
+            cardList();
+
+
+            $('#payform').submit(function (e) {
+                e.preventDefault();
+                submitPayment();
+            });
+
+            var cvcString = '';
+            $('.numpad div span').click(function () {
+
+                var theValue = $(this).html();
+
+                if (theValue == 'Backspace')
+                {
+                    cvcString = cvcString.substring(0, cvcString.length - 1);
+                }
+                else
+                {
+                    cvcString += theValue;
+                }
+
+                $('#cvc').val(cvcString);
+            });
+        });
+
+        function submitPayment()
+        {
+            $('#loadingContainer').show();
+            $.ajax({
+                type: "POST",
+                url: 'http://buddy.na/api/dopayment',
+                data: $('#payform').serializeArray(), // serializes the form's elements.
+                success: function (data) {
+                    //alert(data);
+
+                    if (data.success == true) {
+
+                        if (data.response.ResponseCode == '0' || data.response.ResponseCode == '00')
+                        {
+                            window.location = 'payment_success.html';
+                        }
+                        else
+                        {
+                            alert(data.response.Response);
+
+                        }
+                        //window.location = "list_of_cards.html";
+                    }
+                    else {
+                        alert(data.message);
+                    }
+                    $('#loadingContainer').fadeOut();
+                },
+                error: function (data) {
+                    alert('Something went wrong');
+                    $('#loadingContainer').fadeOut();
+                }
+
+            });
+        }
+        
+
+        function cardList() {
+            $.ajax({
+                type: "POST",
+                url: 'http://buddy.na/api/getcards',
+                data: { user_id: user.id }, // serializes the form's elements.
+                success: function (data)
+                {
+
+                    for (var key in data.cards) {
+
+                        insertCard(data.cards[key].card_number, data.cards[key].id, data.cards[key].default);
+
+                    }
+
+                },
+                error: function (data)
+                {
+                    setTimeout(cardList, 1000);
+                }
+            });
+        }
+
+        function insertCard(cardNumber, cardId, isDefault) {
+            
+            var toIncludeHtml = '<option value="' + cardId+'">' + cardNumber+'</option>';
+            
+            $('#card_id').append(toIncludeHtml);
+        }
+
+        function redirectToIndex()
+        {
+            window.location = 'start-new-chat.html';
+        }
+
+        var step = 1;
+
+        function steps(action) {
+            if (action == 'next') {
+                if (step < 2) {
+                    step++;
+
+
+                }
+            }
+            else {
+                if (step > 1) {
+                    step--;
+                }
+            }
+
+            $('.steps').hide();
+            $('#step' + step).show();
+
+            $('.stepWizzard').attr('disabled', 'disabled');
+
+
+            for (x = 1; x < 3; x++) {
+                //alert(x + ' and' + step);
+                if (x <= step) {
+                    //alert('is smaller');
+                    $('#step-' + x).removeAttr('disabled');
+                }
+            }
+
+        }
+    </script>
+
+
+    <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" src="scripts/platformOverrides.js"></script>
+    <script type="text/javascript" src="scripts/index.js"></script>
+</body>
+</html>

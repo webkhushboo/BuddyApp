@@ -1,0 +1,257 @@
+﻿<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <!--<meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *">-->
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+    
+    <title>Mobile App</title>
+
+    <script>
+        var pictureTaken = false;
+    </script>
+
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    
+    <script src="js/jquery-3.2.1.min.js"></script>
+
+    <script src="js/bootstrap.min.js"></script>
+
+
+    <style>
+        html, body {
+            height: 100%
+        }
+
+
+        #logo {
+            text-align: center;
+            width: 100%;
+            padding: 50px 0;
+            
+        }
+
+        #logo img {
+            max-width: 30%
+        }
+
+        #step1, #step2, #step3, #step4{ padding:20px}
+
+        .yellowBorderInput input::placeholder {
+            color:#666;
+        }
+
+        .yellowBorderInput input {
+            width: 100%;
+            height: 40px;
+            text-align: center;
+            border: 2px solid #FFF;
+            background:rgba(255,255,255,0.8);
+            margin-bottom:10px;
+            color:#333
+        }
+
+        .yellowBorderInput select {
+            width: 100%;
+            height: 40px;
+            text-align: center;
+            border: 2px solid #FFF;
+            background: none;
+            margin-bottom: 10px;
+            text-align-last: center;
+        }
+
+        .yellowButton {
+            width: 100%;
+            height: 40px;
+            margin-top: 5px;
+            border: none;
+            background: #FFF;
+            color: #FBCD0D;
+            line-height: 40px;
+            text-align: center;
+            font-weight: bold;
+            cursor: pointer
+        }
+
+        #signupForm {
+            background: #FBCD0D;
+            padding: 20px 10px
+        }
+
+
+        #cardLists{ list-style-type:none; margin:0; padding:0; text-align:center}
+
+       
+        #cardLists li{ background:#FFF; border-radius:5px; height:40px; line-height:40px; margin-bottom:5px}
+
+        #cardLists i{background:#c81212; color:#FFF; border-radius:20px; height:20px; width:20px; line-height:20px; margin-top:10px; cursor:pointer; float:right; margin-right:20px}
+      
+        #cardLists strong {
+            float: left;
+            margin-left: 20px;
+        }
+    </style>
+
+    
+
+    
+
+</head>
+
+<body>
+
+    <div id="loadingContainer">
+        <div id="loader"></div>
+    </div>
+    
+    <div id="infoMenu" class="collapse" style="z-index:999; position:absolute">
+        <ul>
+            <li><a href="index.html">Home Page</a></li>
+            <li><a href="places.html">Places</a></li>
+            <li><a href="events.html">Events</a></li>
+            <li><a href="transport.html">Transport</a></li>
+            <li><a href="logout.html">Logout</a></li>
+        </ul>
+    </div>
+    
+    <div class="col-md-12" style="padding:0">
+        <div id="logoContainer" style="text-align:center; background:#FFF;">
+            <img style="width:30%; margin:30px 0" src="img/buddyFace.svg" />
+        </div>
+
+        <form name="signupForm" id="signupForm" method="post">
+            
+            <h4 style="text-align:center; color:#FFF">CREATE AN ACCOUNT</h4>
+
+            <div class="yellowBorderInput">
+                <ul id="cardLists">
+                    
+                    
+                </ul>
+            </div>            
+            
+            <div style="text-align:center">
+                <a class="btn btn-primary" style="background:#FFF; color:#333; border:1px solid #FBCD0D" href="add_card.html">Add new Card</a>
+                <a class="btn btn-primary" style="background:#FFF; color:#333; border:1px solid #FBCD0D" href="start-new-chat.html">Go Back</a>
+            </div>
+            
+
+        </form>
+
+    </div>
+
+   <p style="text-align:center; color:#FFF" class="link-upper">Already have an account? <a style="color:#FFF" href="login.html">Sign in</a></p>
+
+    <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" src="scripts/platformOverrides.js"></script>
+    <script type="text/javascript" src="scripts/index.js"></script>
+
+    <script type="text/javascript" src="js/simpleStorage.js"></script>
+    <script type="text/javascript" src="js/storageScript.js"></script>
+    <script type="text/javascript" src="js/validateSignIn.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            cardList();
+
+            $(document).on("click", ".deleteCard", function () {
+                var cardId = $(this).attr('data-id');
+
+                //alert('remove '+cardId);
+                removeCard(cardId);
+            });
+
+
+            $(document).on("click", ".defaultCard", function () {
+                var cardId = $(this).attr('data-id');
+
+                //alert('remove '+cardId);
+                defaultCard(cardId);
+            });
+            
+
+        });
+
+        function cardList() {
+            $.ajax({
+                type: "POST",
+                url: 'http://buddy.na/api/getcards',
+                data: { user_id: user.id }, // serializes the form's elements.
+                success: function (data) {
+                    
+                    for (var key in data.cards) {
+
+                        insertCard(data.cards[key].card_number, data.cards[key].id, data.cards[key].default);
+
+                    }
+                    
+                },
+                error: function (data) {
+                    //$('#loading').fadeOut();
+                    //alert('No Internet');
+                    setTimeout(cardList, 1000);
+                }
+            });
+        }
+
+        function removeCard(cardId) {
+            $.ajax({
+                type: "POST",
+                url: 'http://buddy.na/api/removecard',
+                data: { user_id: user.id, card_id: cardId }, // serializes the form's elements.
+                success: function (data)
+                {
+                    $('#card' + cardId).fadeOut();
+                },
+                error: function (data) {
+                    //$('#loading').fadeOut();
+                    alert('No Internet');
+                    //setTimeout(cardList, 1000);
+                }
+            });
+        }
+
+        function defaultCard(cardId) {
+            $.ajax({
+                type: "POST",
+                url: 'http://buddy.na/api/defaultcard',
+                data: { user_id: user.id, card_id: cardId }, // serializes the form's elements.
+                success: function (data) {
+                    $('.defaultCard').css('color', '#dedede');
+                    $('#defaultCard' + cardId).css('color', '#69b73f');
+                },
+                error: function (data) {
+                    //$('#loading').fadeOut();
+                    alert('No Internet');
+                    //setTimeout(cardList, 1000);
+                }
+            });
+        }
+
+        function insertCard(cardNumber, cardId, isDefault) {
+            var notificationDiv = '';
+
+
+            if (isDefault == 'Y')
+            {
+                var toIncludeHtml = '<li id="card' + cardId + '">' + cardNumber + ' <i data-id="' + cardId + '" class="fa fa-trash-o deleteCard" aria-hidden="true"></i><i data-id="' + cardId + '" id="defaultCard' + cardId + '" style="background:none; color:#69b73f; font-size:20px; "class="fa fa-check-circle-o defaultCard" aria-hidden="true"></i></li>';
+            }
+            else
+            {
+                var toIncludeHtml = '<li id="card' + cardId + '">' + cardNumber + ' <i data-id="' + cardId + '" class="fa fa-trash-o deleteCard" aria-hidden="true"></i><i data-id="' + cardId + '" id="defaultCard' + cardId + '" style="background:none; color:#dedede; font-size:20px;" class="fa fa-check-circle-o defaultCard" aria-hidden="true"></i></li>';
+            }
+
+            
+            $('#cardLists').append(toIncludeHtml);
+        }
+    </script>
+
+</body>
+</html>

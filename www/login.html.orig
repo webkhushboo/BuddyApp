@@ -1,0 +1,138 @@
+﻿<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <!--<meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *">-->
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+
+	<title>Mobile App</title>
+
+	<link href="css/bootstrap.min.css" rel="stylesheet">
+	<link href="css/loading.css" rel="stylesheet">
+	<script src="js/jquery-3.2.1.min.js"></script>
+	<script type="text/javascript" src="js/simpleStorage.js"></script>
+	<script type="text/javascript" src="js/storageScript.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+
+	<style>
+		html, body{height: 100%}
+		body{ background: #FBCD0D}
+		
+		#logo{ text-align: center; width: 100%; margin: 20px 0}
+		#logo img{ max-width: 80%}
+		
+		
+		
+	</style>
+	
+	<script type="text/javascript">
+	
+	$(document).ready(function(e) {
+       
+		$('#loadingContainer').fadeOut();
+		
+        //alert('hallo');
+        var signinForm = window.document.getElementById('signinForm');
+        var fileRequest = new XMLHttpRequest();
+
+        signinForm.addEventListener('submit', function (e) {
+
+            e.preventDefault();
+			
+			
+			$('#loadingContainer').show();
+			
+
+            $.ajax({
+                type: "POST",
+                url: 'http://me.na/sessions/mobileStore',
+                data: $('#signinForm').serializeArray(), // serializes the form's elements.
+                success: function (data) {
+                    //alert(data);
+
+                    if (data.success == true)
+                    {
+                        
+                        addKeyValueToSession('user', data.user);
+                        addKeyValueToSession('device', 0);
+						addKeyValueToSession('passcode_time', Date.now());
+						//addKeyValueToSession('name', data.user.name);
+                        //addKeyValueToSession('surname', data.user.surname);
+                        //addKeyValueToSession('email', data.user.email);
+						
+						
+						var user = getValueFromSession('user');
+						//alert(user.name);
+
+                        window.location = 'start-new-chat.html';
+						
+						$('#loadingContainer').fadeOut();
+                        /*
+                        Lobibox.notify('success', {
+                            msg: data.message
+                        });
+                        */
+						
+						
+                    }
+                    else 
+                    {
+                        alert(data.message);
+						$('#loadingContainer').fadeOut();
+                    }
+                },
+				error: function (data) {
+					alert('Internet Connection Lost');
+					$('#loadingContainer').fadeOut();					
+				}
+
+            });
+
+        }, false); 
+    });
+    </script>
+	
+</head>
+
+<body>
+	
+	<div id="loadingContainer">
+		<div class="loader"></div>
+	</div>
+	
+	<div class="col-md-12">
+		<form id="signinForm" name="signinForm" method="post" enctype="multipart/form-data">
+
+		  <div id="logo">
+			<img src="img/logo.svg" />
+		  </div>
+
+		  <div class="form-group">
+			<label for="email">Email address:</label>
+			<input required placeholder="e.g. gerrit@website-genius.com" name="email" type="email" class="form-control" id="email">
+		  </div>
+		  <div class="form-group">
+			<label for="pwd">Password:</label>
+			<input required placeholder="****" name="password" type="password" class="form-control" id="pwd">
+		  </div>
+		  <!--
+		  <div class="checkbox">
+			<label><input type="checkbox"> Remember me</label>
+		  </div>
+		  -->
+		  <button type="submit" class="btn btn-default">Submit</button>
+            <br />
+            <br />
+            <p>No account yet?</p>
+            <a href="register.html">Register</a>
+		</form>
+	</div>
+
+    <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" src="scripts/platformOverrides.js"></script>
+    <script type="text/javascript" src="scripts/index.js"></script>
+</body>
+</html>

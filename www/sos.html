@@ -1,0 +1,289 @@
+﻿<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <!--<meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *">-->
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+    
+
+	<title>Mobile App</title>
+
+	<link href="css/bootstrap.min.css" rel="stylesheet">
+	<link href="css/loading.css" rel="stylesheet">
+    
+
+	<script src="js/jquery-3.2.1.min.js"></script>
+
+    <script src="https://code.jquery.com/color/jquery.color-2.1.2.min.js"
+            integrity="sha256-H28SdxWrZ387Ldn0qogCzFiUDDxfPiNIyJX7BECQkDE="
+            crossorigin="anonymous"></script>
+
+	<script type="text/javascript" src="js/simpleStorage.js"></script>
+	<script type="text/javascript" src="js/storageScript.js"></script>
+	<script type="text/javascript" src="js/validateSignIn.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	
+    
+
+    <script type="text/javascript" src="jsonanimated/splashscreen/lottie.js"></script>
+    <link href="css/shared.css" rel="stylesheet">
+    <script type="text/javascript" src="js/shared.js"></script>
+
+	<link rel="stylesheet" href="css/font-awesome.min.css">
+	
+
+	<style>
+		html, body{height: 100%; min-height:660px}
+		body{ background: #FFF}
+		
+		#logo{ text-align: center; width: 100%; margin: 20px 0}
+		#logo img{ max-width: 80%}
+		
+		#header{width: 100%; height: 50px; background: #FBCD0D; border-bottom: 1px solid #7C7C7C; position: fixed; left: 0; top: 0; z-index: 100}
+
+        #imageHeaderContainer {
+            width: 100%;
+            height: 300px;
+            background-color: #FBCD0D;
+            text-align: center;
+            overflow: hidden
+        }
+		#imageHeaderContainer img{ width:20%; margin-top:70px; margin-bottom:10px}
+		
+		
+		#greeting{ text-align: center; font-weight: bold; font-size: 20px; margin: 20px 0}
+		#subGreeting{text-align: center}
+		
+		#startChat{  margin-top: 40px; background: #FFF; border: #C3C3C3 1px solid; padding: 10px; width: 90%; margin-left: 5%}
+		#startChat i{}
+		#startChat input{ width: 100%; border: none; background: none}
+
+        #submitNewChat button{border:none; background:none; width:100%; text-align:center}
+        #submitNewChat a {
+            display: block;
+            width: 100%;
+            text-align:center
+        }
+        #submitNewChat img{height:100px}
+
+        #sosImageButton {
+            text-align:center;
+            margin-top:-100px;
+            position:relative
+        }
+
+        #sosImageButton img{ width:200px;}
+
+        #loadingBar{margin:0 10px}
+
+        #alarmImage{position:absolute; left:50%; margin-left:-100px; display:none}
+
+	</style>
+	
+	
+	
+	<script type="text/javascript">        
+        var audio = new Audio('audio/alarm.mp3');
+
+        var root = this;
+
+        root.timer = null;
+
+        $(document).ready(function (e) {            
+            //flashAlarm();
+            
+
+			$('#loadingContainer').fadeOut();
+
+			$('#userIdInput').val(user.id);
+			
+			$('#userName').html(user.name);			
+			
+			$('#startChatForm').submit(function(e){
+				e.preventDefault();
+				
+				$.ajax({
+					type: "POST",
+					url: 'http://me.na/api/startchat',
+					data: $('#startChatForm').serialize(), // serializes the form's elements.
+					success: function (data) {
+						
+						window.location = 'chat-message.html#'+data.inbox.id;
+					},
+					error: function(data){
+						$('#loading').fadeOut();
+						alert('Some kind of error happened');
+					}
+				});	
+				
+            });
+
+
+            var _originalSize = $(window).width() + $(window).height()
+            $(window).resize(function () {
+                if ($(window).width() + $(window).height() != _originalSize) {
+                    //console.log("keyboard show up");
+                    //$(".copyright_link").css("position", "relative");
+
+                    $('#bottomBar').hide();
+
+                } else {
+
+                    $('#bottomBar').show();
+                    //console.log("keyboard closed");
+                    //$(".copyright_link").css("position", "fixed");
+                }
+            });
+            
+
+            $('#sosImageButton').off('touchstart');
+            $('#sosImageButton').on('touchstart', function (e) {
+                updateLocation();
+                root.timer = setTimeout(triggerSOS, 5000);
+            });
+
+            // listen to all mouseup and touchend events
+            $('#sossosImageButton').on('touchend mouseup', touchEnd);
+            $(document).on('touchend mouseup', touchEnd);
+
+            function touchEnd() {
+                //alert('left');
+                if (root.timer) {
+                    //alert('roottimer');
+                    clearInterval(root.timer);
+                }
+            }
+
+
+            /*
+            $('#sosImageButton').mousedown(function (e) {
+                clearTimeout(this.downTimer);
+                this.downTimer = setTimeout(function () {
+                    audio.play();
+                    alert('Alert!');
+                }, 2000);
+            }).mouseup(function (e) {
+                clearTimeout(this.downTimer);
+            });
+            */
+
+		});
+		
+        function updateLocation()
+        {
+
+        }
+
+        function triggerSOS()
+        {
+            audio.play();
+            flashAlarm();
+            //alert('Alert!');
+        }
+
+        function flashAlarm(red=false)
+        {
+            //console.log(red);
+            if (red == false)
+            {
+                $('#alarmImage').fadeIn(500);
+                $('#imageHeaderContainer').animate({ 'backgroundColor': '#FBCD0D' }, 500);
+                red = true;
+            }
+            else
+            {
+                $('#alarmImage').fadeOut(500);
+                $('#imageHeaderContainer').animate({ 'backgroundColor': '#EF2222' }, 500);
+                red = false;
+            }
+
+            setTimeout('flashAlarm(' + red + ')', 500);
+        }
+    </script>
+	
+</head>
+
+<body>
+    <div id="loadingContainer">
+        <div id="loader"></div>
+    </div>
+    <script type="text/javascript" src="jsonanimated/splashscreen/lottie.js"></script>
+    <script type="text/javascript" src="js/loading.js"></script>
+
+	<section id="header">
+		<div class="col-xs-2 col-sm-2 col-md-2">
+            <a href="start-new-chat.html"><img style="height: 20px; margin: 13px 0 0 2px" src="img/goback.svg" /></a>
+		</div>
+		
+		<div class="col-xs-8 col-sm-8 col-md-8">
+			<h4 style="margin-top: 16px; text-align: center">SOS BUDDY</h4>
+		</div>
+		
+		<div class="col-xs-2 col-sm-2 col-md-2">
+			<img style="height: 20px; margin: 13px; float: right" src="img/menustack.svg" />
+		</div>
+	</section>
+	
+	<div id="imageHeaderContainer">
+		<img src="img/buddyFace.svg" />
+        <p>Your personal Emergency Service!</p>        
+	</div>
+    <div id="sosImageButton">
+        <img src="img/sos_image.svg" />
+        <img id="alarmImage" src="img/sos_image_inverted.svg" />
+        <p><strong>Touch and hold for 5 seconds to activate the SOS</strong></p>
+        <p>This will  share your personal details and  location with our 24/7 Emergency Call Center</p>
+
+
+    </div>
+	
+    <div id="loadingBar">
+         <h3 style="color:#FBCD0D; text-align:center">MEDICAL - FIRE - POLICE</h3>
+        <div class="progress" style="background:#FBCD0D">
+            <div class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width:70%; background:#333; color:#FFF">
+                Location 70% accurate
+            </div>
+        </div>
+    </div>
+
+    <div id="submitNewChat" class="col-md-12" style="margin-top: 40px; display: flex">
+        <a href="tel:085900"><img src="img/icons/startChatYellow.svg" /></a>
+    </div>
+
+    <section id="bottomBar">
+        <div class="col-xs-1 col-sm-1 col-md-1"></div>
+        <div class="col-xs-2 col-sm-2 col-md-2">
+            <img id="openQR" src="img/icons/qrcode.svg" />
+        </div>
+        <div class="col-xs-2 col-sm-2 col-md-2">
+            <a href="inbox.html"><img src="img/icons/inbox.svg" /></a>
+        </div>
+        <div class="col-xs-2 col-sm-2 col-md-2">
+            <a href="start-new-chat.html"><img style="height: 40px; margin-top: 5px" src="images/buddy_icon_bottom.svg" /></a>
+        </div>
+        <div class="col-xs-2 col-sm-2 col-md-2">
+            <a href="pages.html"><img src="img/icons/case.svg" /></a>
+        </div>
+        <div class="col-xs-2 col-sm-2 col-md-2">
+            <img style="height: 13px; margin-top: 17px" src="img/icons/sos.svg" />
+        </div>
+
+        <div class="col-xs-1 col-sm-1 col-md-1"></div>
+
+    </section>
+
+    <div  id="qrCodeFrame">
+        <div id="closeFrame">x</div>
+        <iframe></iframe>
+    </div>
+    
+
+    <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" src="scripts/platformOverrides.js"></script>
+    <script type="text/javascript" src="scripts/index.js"></script>
+</body>
+</html>

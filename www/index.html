@@ -1,0 +1,71 @@
+﻿<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <!--<meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *">-->
+
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+    <link rel="stylesheet" type="text/css" href="css/index.css">
+
+	<title>Mobile App</title>
+
+
+    <script src="js/jquery-3.2.1.min.js"></script>
+	<link href="css/bootstrap.min.css" rel="stylesheet">
+	<script src="js/bootstrap.min.js"></script>
+
+    <script>
+
+        setTimeout(redirectToPage,7000);
+        
+        
+        function redirectToPage() {
+            window .location = 'start-new-chat.html';
+        }
+    </script>
+
+	<style>
+		html, body{height: 100%}
+		body{ background: #FBCD0D}
+
+        @font-face {
+            font-family: 'Dimbo';
+            src: url('DimboRegular.eot');
+            src: url('dimbofont/DimboRegular.eot?#iefix') format('embedded-opentype'), url('dimbofont/DimboRegular.woff2') format('woff2'), url('dimbofont/DimboRegular.woff') format('woff'), url('dimbofont/DimboRegular.ttf') format('truetype'), url('dimbofont/DimboRegular.svg#DimboRegular') format('svg');
+            
+        }
+	</style>
+
+</head>
+
+<body>
+	<div style="display: table; height: 100%; text-align: center; width: 100%">
+		<div style=" display: table-cell; vertical-align: middle">
+			
+			<a href="start-new-chat.html">
+                <div id="bm"></div></a>
+
+                <!--<div style="font-family:Dimbo">how you man</div>-->
+		</div>
+	</div>
+
+    <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" src="scripts/platformOverrides.js"></script>
+    <script type="text/javascript" src="scripts/index.js"></script>
+    <script type="text/javascript" src="jsonanimated/splashscreen/lottie.js"></script>
+    <script>
+        var animation = bodymovin.loadAnimation({
+            container: document.getElementById('bm'),
+            renderer: 'svg',
+            loop: true,
+            autoplay: true,
+            path: 'jsonanimated/splashscreen/data.json'
+        })
+    </script>
+
+</body>
+</html>

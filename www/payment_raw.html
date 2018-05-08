@@ -1,0 +1,267 @@
+﻿<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <!--<meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *">-->
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+    
+    <title>Mobile App</title>
+
+    <script>
+        var pictureTaken = false;
+    </script>
+
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/loading.css" rel="stylesheet">
+    <script src="js/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="js/simpleStorage.js"></script>
+    <script type="text/javascript" src="js/storageScript.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+
+
+    <script type="text/javascript" src="jsonanimated/splashscreen/lottie.js"></script>
+    <link href="css/shared.css" rel="stylesheet">
+    <script type="text/javascript" src="js/shared.js"></script>
+
+    <style>
+        html, body {
+            height: 100%
+        }
+
+        body {
+            background: #FBCD0D
+        }
+
+        #logo {
+            text-align: center;
+            width: 100%;
+            padding: 50px 0;
+            background:#FFF
+            
+        }
+
+        #logo img {
+            max-width: 30%
+        }
+
+        #step1, #step2, #step3, #step4{ padding:20px}
+
+        .yellowBorderInput input {
+            width: 100%;
+            height: 40px;
+            text-align: center;
+            border: 2px solid #FFF;
+            background:none;
+            margin-bottom:10px
+        }
+
+        .yellowBorderInput select {
+            width: 100%;
+            height: 40px;
+            text-align: center;
+            border: 2px solid #FFF;
+            background: none;
+            margin-bottom: 10px;
+            text-align-last: center;
+        }
+
+        .yellowButton {
+            width: 100%;
+            height: 40px;
+            margin-top: 5px;
+            border: none;
+            background: #FFF;
+            color: #FBCD0D;
+            line-height:40px;
+            text-align:center;
+            font-weight:bold;
+            cursor:pointer
+        }
+
+
+        .steps{display:none}
+        .step1{display:block}
+    </style>
+
+    <style>
+        .stepwizard-step p {
+            margin-top: 10px;
+        }
+
+        .stepwizard-row {
+            display: table-row;
+        }
+
+        .stepwizard {
+            display: table;
+            width: 100%;
+            position: relative;
+            margin-top:30px
+        }
+
+        .btn-circle[disabled] {
+            opacity: 1 !important;
+            filter: alpha(opacity=100) !important;
+            background: #FFF;
+            border: 1px solid #CCC;
+            color: #999;
+        }
+        .btn-circle {
+            border-radius: 50px;
+            background: #FBCD0D;
+             border:none;
+             font-weight:bold;
+             color:#333
+        }
+        
+        .stepwizard-row:before {
+            top: 14px;
+            bottom: 0;
+            position: absolute;
+            content: " ";
+            width: 100%;
+            height: 1px;
+            background-color: #ccc;
+            z-order: 0;
+        }
+
+        .stepwizard-step {
+            display: table-cell;
+            text-align: center;
+            position: relative;
+        }
+    </style>
+
+    <script type="text/javascript">
+
+	    
+
+    </script>
+
+</head>
+
+<body>
+
+    
+
+
+        <form class="steps step1" id="step1" name="signupForm" action="https://www.vcs.co.za/vvonline/ccxmlauth.asp" method="post">
+            
+            <h4 style="text-align:center">Make a Payment to Wilko Aschenbron CC</h4>
+
+            <div class="yellowBorderInput">
+                <input placeholder="Enter Amount" id="Amount" type="text" name="Amount" required="required"> 
+
+                <input placeholder="Name and Surname" id="name" type="hidden" name="name" data-name="name" required="required"> 
+                
+                
+                <input id="Description" type="hidden" name="Description" data-name="Description" required="required">
+
+                <input placeholder="Your Email" id="email" type="hidden" name="email" data-name="email" required="required">
+
+                <input placeholder="Cellphone Number" id="cellphone" type="hidden" name="cellphone" data-name="cellphone" required="required">
+
+
+                <input id="p2" type="hidden" name="p2" data-name="p2" required="required" readonly>
+                
+                <input name="Currency" type="hidden" value="NAD" />
+
+                <input name="Mobile" type="hidden" value="Y" />
+
+                <input name="Hash" type="hidden" value="Hash" />
+
+                <input name="UserId" type="hidden" value="N130" />
+
+                <input id="CustomerID" type="hidden" name="CustomerID">
+
+
+                <input type="hidden" name="UrlsProvided" value="Y">
+
+                <input type="hidden" name="DeclinedUrl" value="http://me.na/buddyapp/transaction/failed">
+
+                <input type="hidden" name="ApprovedUrl" value="http://me.na/buddyapp/transaction/success">
+
+
+            </div>            
+            <button type="submit" class="yellowButton proceed" data-id="1"> Proceed </button>
+
+        </form>
+
+        
+
+    <script>
+
+        /*
+        if (navigator.cookieEnabled == true) {
+            alert('Cookies seems to be enabled');
+        }
+        else {
+            alert('cookies not enabled, payment form will NOT work. Word.');
+        }
+        */
+
+        var hash = '';
+
+        var descriptionOfGoods = 'Description of Goods';
+
+        console.log(hash);
+        $(document).ready(function () {
+
+
+
+            hash = location.hash.substr(1)
+
+            //alert(hash);
+            var user = getValueFromSession('user');
+
+            $('#loadingContainer').fadeOut();
+            $('#name').val(user.name);
+            $('#email').val(user.email);
+            $('#cellphone').val(user.cellphone);
+            $('#CustomerID').val(user.id);
+
+            //$('#p3').val(hash);
+
+            $('#loading').fadeIn();
+
+            setTimeout(assignCorrectly,300);
+           
+
+            /*
+            $.ajax({
+                type: "GET",
+                url: 'http://me.na/api/newpaymentrecord',
+                success: function (data) {
+                    $('#p2').val('buddy'+ data.payment.id);
+                    $('#p3').val('Payment History Id ' + hash);
+                    $('#loading').fadeOut();
+                },
+                error: function (data) {
+                    $('#loading').fadeOut();
+                    //$('#loading').fadeOut();
+                    alert('No Internet');
+                }
+            });
+            */
+        });
+
+        function assignCorrectly()
+        {
+
+            console.log(hash);
+            $('#p2').val(hash);
+            $('#p3').val(descriptionOfGoods);
+            //alert($('#p2').val());
+        }
+    </script>
+
+
+    <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" src="scripts/platformOverrides.js"></script>
+    <script type="text/javascript" src="scripts/index.js"></script>
+</body>
+</html>

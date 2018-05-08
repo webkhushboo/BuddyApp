@@ -1,0 +1,196 @@
+﻿<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <!--<meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *">-->
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+
+	<title>Mobile App</title>
+
+	<link href="css/bootstrap.min.css" rel="stylesheet">
+	<link href="css/loading.css" rel="stylesheet">
+	<script src="js/jquery-3.2.1.min.js"></script>
+	<script type="text/javascript" src="js/simpleStorage.js"></script>
+	<script type="text/javascript" src="js/storageScript.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+
+    <style>
+        html, body {
+            height: 100%
+        }
+
+        body {
+            background: #FFF
+        }
+
+        #logo {
+            text-align: center;
+            width: 100%;
+            margin: 0;
+            padding:20px 0
+        }
+
+        #logo img {
+            max-width: 80%
+        }
+
+
+        #signinForm {
+            background: #FFF;
+            margin: 0;
+            padding: 10px;
+            padding: 20px
+        }
+
+        .yellowInput {
+            background: #FBCD0D;
+            border-radius: 0;
+            border: none;
+            color: #FFF;
+            text-align: center
+        }
+
+            .yellowInput input {
+                background: none;
+                border: none;
+                width: 100%;
+                height: 40px;
+                text-align: center
+            }
+
+                .yellowInput input::-webkit-input-placeholder {
+                    text-align: center;
+                    color: #FFF
+                }
+
+        .yellowBorderInput input {
+            width: 100%;
+            height: 40px;
+            text-align: center;
+            border: 2px solid #FBCD0D;
+        }
+
+        .yellowButton {
+            width: 100%;
+            height: 40px;
+            margin-top: 20px;
+            border: none;
+            background: #FBCD0D;
+            color: #FFF;
+        }
+    </style>
+	
+	<script type="text/javascript">
+	
+	$(document).ready(function(e) {
+       
+		$('#loadingContainer').fadeOut();
+		
+        //alert('hallo');
+        var signinForm = window.document.getElementById('signinForm');
+        var fileRequest = new XMLHttpRequest();
+
+        signinForm.addEventListener('submit', function (e) {
+
+            e.preventDefault();
+			
+			
+			$('#loadingContainer').show();
+			
+
+            $.ajax({
+                type: "POST",
+                url: 'http://buddy.na/sessions/mobileStore',
+                data: $('#signinForm').serializeArray(), // serializes the form's elements.
+                success: function (data) {
+                    //alert(data);
+
+                    if (data.success == true)
+                    {
+                        
+                        addKeyValueToSession('user', data.user);
+                        addKeyValueToSession('device', 0);
+						addKeyValueToSession('passcode_time', Date.now());
+						//addKeyValueToSession('name', data.user.name);
+                        //addKeyValueToSession('surname', data.user.surname);
+                        //addKeyValueToSession('email', data.user.email);
+						
+						
+						var user = getValueFromSession('user');
+						//alert(user.name);
+
+                        window.location = 'start-new-chat.html';
+						
+						$('#loadingContainer').fadeOut();
+                        /*
+                        Lobibox.notify('success', {
+                            msg: data.message
+                        });
+                        */
+						
+						
+                    }
+                    else 
+                    {
+                        alert(data.message);
+						$('#loadingContainer').fadeOut();
+                    }
+                },
+				error: function (data) {
+					alert('Internet Connection Lost');
+					$('#loadingContainer').fadeOut();					
+				}
+
+            });
+
+        }, false); 
+    });
+    </script>
+	
+</head>
+
+<body>
+	
+	
+    <div id="loadingContainer">
+        <div id="loader"></div>
+    </div>
+
+    <div class="col-md-12" style="padding:0">
+
+
+        <div id="logo" style="background:#FBCD0D">
+            <img src="img/icons/buddy.svg" />
+        </div>
+
+        <form id="signinForm" name="signinForm" method="post" enctype="multipart/form-data">
+
+            <h4 style="text-align:center">Sign in</h4>
+
+
+            <div class="yellowInput">
+                <input value="gerrit@dream.photography" required placeholder="Email" name="email" type="email" id="email">
+                <hr style=" height:1px; padding:0; margin:0; width:80%; margin-left:10%" />
+                <input value="password" required placeholder="Password" name="password" type="password" id="pwd">
+            </div>
+
+            <p style="text-align:center; margin:20px 0;">OR</p>
+
+            <div class="yellowBorderInput">
+                <input placeholder="Enter your unique ME Token" name="meToken" type="text" id="meToken">
+            </div>
+
+            <button type="submit" class="yellowButton">Proceed</button>
+
+            <p style="text-align:center; margin-top:20px">Don’t have an account?  <a style=" color:#FBCD0D" href="register.html">Sign up</a></p>
+        </form>
+    </div>
+
+    <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" src="scripts/platformOverrides.js"></script>
+    <script type="text/javascript" src="scripts/index.js"></script>
+</body>
+</html>
