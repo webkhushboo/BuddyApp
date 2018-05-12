@@ -770,7 +770,7 @@
         function addPageDetailOffline(jsonArray) {
             var windowWidth = $(window).width();
             //Replace all https:// images to downloaded images
-            var details = replaceAllDetailsImagesInOfflineMode(jsonArray['detail']); 
+            var details = replaceAllDetailsImagesInOfflineMode(jsonArray['detail']);
             if (jsonArray['page_type_id'] == 1) {
                 var innerHtml = '<div class="pageInfo steps' + jsonArray['id'] + '"><div class="pageContainer">' + details + '</div></div>';
             }
@@ -791,26 +791,17 @@
             }
             else if (jsonArray['page_type_id'] == 4) {
                 var galleryImageHtml = '';
-
-
                 var pagesDone = false;
                 var x = 1;
-                while (pagesDone == false) {
-                    while (pagesDone == false) {
-                        // if (urlExists('http://res.cloudinary.com/buddy-industries-cc/image/upload/c_limit,h_1000,w_1000/pg_' + x + '/' + jsonArray.pdf_name + '.jpg') == 200) {
-                        galleryImageHtml += '<a data-fancybox="detailGallery' + jsonArray['id'] + '" href="' + jsonArray.pdf_name + '">' +
-                            '<div style="padding:5px" class="col-xs-12 col-sm-12 col-md-12"><img style="width:100%; margin-bottom:10px" src="' + jsonArray.pdf_name + '"/></div></a>';
-                        x++;
-                        //}
-                        //else {
-                        pagesDone = true;
-                        //}
-
-                    }
+                for (var x=1;x<=3;x++) {
+                   // if (checkIfFilePresentOnFileStorage('file:///data/user/0/app.buddy.na/files/files/' + x + '/' + jsonArray.pdf_name + '.jpg') == 200) {
+                        galleryImageHtml += '<a data-fancybox="detailGallery' + jsonArray['id'] + '" href="file:///data/user/0/app.buddy.na/files/files/'  +x+ "_"+ jsonArray.pdf_name + '.jpg">' +
+                            '<div style="padding:5px" class="col-xs-12 col-sm-12 col-md-12"><img style="width:100%; margin-bottom:10px" src="file:///data/user/0/app.buddy.na/files/files/' + x + '_' + jsonArray.pdf_name + '.jpg"/></div></a>';
+                   // }
+                    //else {
+                      //  pagesDone = true;
+                    //}
                 }
-
-
-
                 var innerHtml = '<div class="pageInfo steps' + jsonArray['id'] + '"><div class="pageContainer">' + galleryImageHtml + '</div></div>';
             }
             else if (jsonArray['page_type_id'] == 5) {
@@ -877,6 +868,7 @@
 
             return elem.innerHTML;
         }
+
     </script>
 
 

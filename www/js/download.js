@@ -98,10 +98,12 @@ function file_transfer_child_pages(fileEntry, uri, readBinaryData, id, column_na
             db.transaction(function (tx) {
                 tx.executeSql('update ' + table_name + ' set ' + column_name + ' = ? where id = ? and user_id = ?', [entry.toURL(), id, user.id]);
                 if (column_name == 'video_name') {
-                    SpinnerPlugin.activityStop(function () {
+                     $('#loadingContainer').fadeOut();
+                    //SpinnerPlugin.activityStop(function () {
                         alert('Downloading completed!!');
-                    }, function () {
-                    });
+                    //}, function () {
+                    //});
+                   
                 }
             });
             if (readBinaryData) {
@@ -127,6 +129,7 @@ function file_transfer_child_pages(fileEntry, uri, readBinaryData, id, column_na
 }
 
 function downloadpageoffline(id) {
+    $('#loadingContainer').fadeIn();
     jQuery(document).ready(function ($) {
 
         $.ajax({
@@ -171,6 +174,9 @@ function downloadpageoffline(id) {
                                     data.place.app_background,
                                     data.place.image_name_icon],
                                     function (tx, result) {
+                                        //start the downloading spinner
+                                        //var options = { dimBackground: true };
+                                       // SpinnerPlugin.activityStart("Downloading in progress...", options);
                                         insertChildPagesInfoToDB(data.pages, data.place.image_name, data.place.image_name_thumb, data.place.id, data.place.image_name_icon);
                                     },
                                     function (error) {
@@ -233,10 +239,6 @@ function downloadpageoffline(id) {
                                 , function (tx, result) {
                                     count++;
 
-                                    //start the downloading spinner
-                                    var options = { dimBackground: true };
-                                    SpinnerPlugin.activityStart("Downloading in progress...", options);
-
                                     downloadChildImages(child_page.id, child_page.image_name, child_page.pdf_name, child_page.video_name);
                                     downloadAllImagesFromDetails(child_page.detail);
                                     if (count == pages.length) {
@@ -264,12 +266,40 @@ function downloadpageoffline(id) {
         var table_name = 'child_pages';
         if (child_image_name !== null)
             download(child_image_name, child_page_id, column_name, table_name, false);
-        column_name = 'pdf_name';
-        if (child_pdf_name !== null)
-            download(child_pdf_name, child_page_id, column_name, table_name, false);
+        downloadPdf(child_pdf_name, child_page_id, column_name, table_name);
         column_name = 'video_name';
         if (video_name !== null)
             download(video_name, child_page_id, column_name, table_name, true);
+    }
+
+    function downloadPdf(child_pdf_name, child_page_id, column_name, table_name) {
+        var column_name = 'pdf_name';
+        if (child_pdf_name !== null) {
+            var pagesDone = false;
+            var x = 1;
+            while (pagesDone == false) {
+                var url = 'http://res.cloudinary.com/buddy-industries-cc/image/upload/c_limit,h_1000,w_1000/pg_' + x + '/' + child_pdf_name + '.jpg';
+                filename = x+"_"+child_pdf_name + "" +".jpg";
+                if (urlExists(url) == 200) {
+                    downloadImageWithUrl(url,filename);
+                    x++;
+                }
+                else {
+                    pagesDone = true;
+                }
+            }
+        }
+
+    }
+
+    function urlExists(testUrl) {
+        var http = jQuery.ajax({
+            type: "HEAD",
+            url: testUrl,
+            async: false
+        })
+        return http.status;
+        // this will return 200 on success, and 0 or negative value on error
     }
 
     function downloadImages(image_name, image_thumb_name, place_id, image_name_icon) {
@@ -299,9 +329,11 @@ function downloadAllImagesFromDetails(details) {
     }
 }
 
-function downloadImageWithUrl(url) {
+function downloadImageWithUrl(url,file) {
     window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function (fs) {
         var fileName = url.substring(url.lastIndexOf("/") + 1, url.length);
+        if(file)
+          fileName = file;
         fs.root.getFile(fileName, {
             create: true,
             exclusive: false
